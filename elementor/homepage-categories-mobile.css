@@ -1,0 +1,18 @@
+/**
+ * Elvakala – Homepage Categories Mobile
+ *
+ * Reduces the size of homepage category images on mobile
+ * for better spacing and visual balance.
+ *
+ * Breakpoint: up to 767px
+ */
+
+@media (max-width: 767px) {
+
+    .elva-categories img {
+        width: 76% !important;
+        margin: auto;
+        display: block;
+    }
+
+}

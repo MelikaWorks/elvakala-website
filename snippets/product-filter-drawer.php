@@ -58,10 +58,10 @@ function elva_get_drawer_categories() {
          * ابتدا زیردسته‌های خود دسته فعلی را می‌گیریم.
          * hide_empty روی false است تا همه زیردسته‌ها نمایش داده شوند.
          */
-      /*
- * First, get the child categories of the current category.
- * hide_empty is set to false to display all child categories.
- */
+        /*
+        * First, get the child categories of the current category.
+        * hide_empty is set to false to display all child categories.
+        */
         $categories = get_terms(array(
             'taxonomy'   => 'product_cat',
             'parent'     => (int) $current_term->term_id,
@@ -74,10 +74,10 @@ function elva_get_drawer_categories() {
          * اگر دسته فعلی زیردسته داشته باشد:
          * خود دسته فعلی، دسته مادر لیست محسوب می‌شود.
          */
-      /*
- * If the current category has child categories,
- * the current category is treated as the parent of the list.
- */
+        /*
+        * If the current category has child categories,
+        * the current category is treated as the parent of the list.
+        */
         if (
             !is_wp_error($categories) &&
             !empty($categories)
@@ -94,10 +94,10 @@ function elva_get_drawer_categories() {
          * اگر دسته فعلی زیردسته نداشته باشد:
          * دسته مادر و دسته‌های هم‌سطح نمایش داده شوند.
          */
-      /*
- * If the current category has no child categories,
- * display its parent category and sibling categories.
- */
+        /*
+         * If the current category has no child categories,
+        * display its parent category and sibling categories.
+        */
         $parent_id = (int) $current_term->parent;
 
         if ($parent_id > 0) {
@@ -131,10 +131,10 @@ function elva_get_drawer_categories() {
      * صفحه اصلی فروشگاه یا سایر آرشیوهای محصولات:
      * دسته‌های اصلی نمایش داده شوند.
      */
-  /*
- * On the main shop page or other product archives,
- * display the top-level categories.
- */
+     /*
+    * On the main shop page or other product archives,
+    * display the top-level categories.
+    */
     $categories = get_terms(array(
         'taxonomy'   => 'product_cat',
         'parent'     => 0,
@@ -406,10 +406,10 @@ add_action('wp_footer', function () {
                          * ویژگی‌هایی که هیچ مقدار ثبت‌شده‌ای ندارند
                          * داخل پنل ساخته نمی‌شوند.
                          */
-                      /*
-                      * Attributes with no registered values
-                      * are not displayed in the filter drawer.
-                      */
+                        /*
+                        * Attributes with no registered values
+                        * are not displayed in the filter drawer.
+                        */
                         $attribute_terms = get_terms(array(
                             'taxonomy'   => $taxonomy,
                             'hide_empty' => true,
@@ -816,9 +816,9 @@ add_action('wp_head', function () {
            فیلتر قیمت / Price filter
         ===================================== */
 
-      /* =====================================
-   فیلتر قیمت  /Price filter
-===================================== */
+        /* =====================================
+        فیلتر قیمت  /Price filter
+        ===================================== */
 
 .elva-filter-content .price_slider_wrapper {
     width: 100%;

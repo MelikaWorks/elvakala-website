@@ -1,12 +1,14 @@
 <?php
 /**
  * Elvakala – Product Archive Filter Drawer
+  * Version: 4.0
  *
  * محل اجرا:
  * WooCommerce Shop / Product Category / Product Taxonomy Archives
  */
 /**
  * Elvakala – Product Archive Filter Drawer
+  * Version: 4.0
  *
  * Runs on:
  * WooCommerce Shop / Product Category / Product Taxonomy Archives

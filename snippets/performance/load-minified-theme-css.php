@@ -21,3 +21,18 @@ add_filter('style_loader_src', function ($src, $handle) {
     return $src;
 
 }, 10, 2);
+
+add_filter('script_loader_src', function ($src, $handle) {
+
+    // Main theme JS
+    if (strpos($src, '/wp-content/themes/mweb-digiland-pro/assets/js/my-script.js') !== false) {
+        $src = str_replace(
+            '/wp-content/themes/mweb-digiland-pro/assets/js/my-script.js',
+            '/wp-content/themes/mweb-digiland-pro/assets/js/my-script.min.js',
+            $src
+        );
+    }
+
+    return $src;
+
+}, 10, 2);

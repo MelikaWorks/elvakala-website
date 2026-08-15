@@ -2,61 +2,129 @@
 
 ## Goal
 
-Optimize the Largest Contentful Paint (LCP) of the ElvaKala homepage, with a focus on the main Elementor slider image on mobile and desktop.
+Optimize the Largest Contentful Paint (LCP) of the ElvaKala homepage, specifically the main Elementor slider image (`slider02`) on mobile devices.
+
+---
 
 ## Initial Problem
 
-Lighthouse identified the main homepage slider image (`slider02`) as the LCP element.
+Lighthouse identified the first homepage slider image (`slider02`) as the LCP element.
 
-The Elementor slider loads the image as a `background-image` on a Swiper element:
+The slider is rendered by Elementor/Swiper as a background image:
 
 ```html
-<div class="swiper-slide-bg ...">
+<div class="swiper-slide-bg elementor-ken-burns--active" role="img" aria-label="slider02">
 ```
 
-Because the image is loaded as a CSS background, the browser discovers it later than a normal `<img>` element.
+Because the LCP image is applied as a CSS background rather than a normal `<img>` element, the browser does not discover the image directly from the initial HTML element.
 
-Initial tests showed:
+Initial Lighthouse testing showed approximately:
 
-- High LCP time
-- High Resource Load Delay
-- The original desktop `slider02.png` image was approximately 1.7 MB
-- The large desktop image was also being used on mobile
-- Lighthouse consistently identified `slider02` as the LCP element
+| Metric | Result |
+|---|---:|
+| Performance | 39 |
+| FCP | 4.5 s |
+| LCP | 20.7 s |
+| TBT | 710 ms |
+| Speed Index | 11.4 s |
+| CLS | 0.007 |
 
-## Step 1 — Preload the LCP Image
+The main bottleneck was the LCP slider image.
 
-The main slider image was explicitly preloaded from the document `<head>` so the browser could discover and start downloading it before Elementor finished processing the slider.
+---
 
-Testing confirmed that preloading significantly reduced the LCP Resource Load Delay.
+## Step 1 — Initial Desktop Preload Test
 
-The implementation is stored in:
+The first optimization attempt was to explicitly preload the desktop slider image from the document `<head>`:
 
-```text
-snippets/performance/preload-homepage-lcp.php
+```php
+add_action('wp_head', function () {
+    if (is_front_page()) {
+        echo '<link rel="preload" as="image" href="https://elvakala.com/wp-content/uploads/2026/07/slider02.png" fetchpriority="high">' . "\n";
+    }
+}, 1);
 ```
 
-## Step 2 — Create a Mobile-Specific Slider Image
+A Lighthouse run after this change produced:
 
-A smaller version of the slider image was created specifically for mobile devices:
+| Metric | Before | Test Result |
+|---|---:|---:|
+| Performance | 39 | 45 |
+| FCP | 4.5 s | 4.3 s |
+| LCP | 20.7 s | 19.9 s |
+| TBT | 710 ms | 510 ms |
+| Speed Index | 11.4 s | 9.3 s |
+| CLS | 0.007 | 0.007 |
+
+Because Lighthouse results naturally vary between runs, the score difference alone was not treated as proof of the preload improvement.
+
+![Initial Lighthouse test](./01-lighthouse-before-lcp-fix.png)
+
+---
+
+## LCP Breakdown Before Mobile Optimization
+
+The LCP breakdown showed:
+
+| Subpart | Duration |
+|---|---:|
+| Time to First Byte | 260 ms |
+| Resource Load Delay | 1,810 ms |
+| Resource Load Duration | 13,340 ms |
+| Element Render Delay | 10 ms |
+
+The two main problems were therefore:
+
+1. The browser was discovering the LCP resource too late.
+2. The actual slider image required a very long download time on the simulated mobile connection.
+
+![LCP breakdown before optimization](./02-lcp-breakdown-before.png)
+
+---
+
+## LCP Request Discovery
+
+Lighthouse also reported:
+
+- `fetchpriority=high should be applied`
+- `Request is discoverable in initial document`
+- `lazy load not applied` ✓
+
+This confirmed that the Elementor background image itself was not considered directly discoverable from the initial document.
+
+![LCP request discovery](./03-lcp-request-discovery-before.png)
+
+The preload was then verified directly in the generated HTML.
+
+![Desktop preload in HTML](./04-desktop-preload-in-html.png)
+
+---
+
+## Step 2 — Mobile-Specific Slider Image
+
+The original desktop slider image was approximately 1.7 MB and was unnecessarily large for mobile devices.
+
+A dedicated mobile version was therefore created:
 
 ```text
 slider02-900x480-1.png
 ```
 
-This image was configured as the mobile background image in Elementor.
+The mobile image was assigned to the slider's mobile breakpoint in Elementor.
 
-The original desktop image remains:
+The original desktop image remained:
 
 ```text
 slider02.png
 ```
 
-This prevents mobile devices from downloading the much larger desktop image unnecessarily.
+This allowed mobile devices to load a significantly smaller image instead of downloading the full desktop asset.
 
-## Step 3 — Responsive LCP Preload
+---
 
-The preload logic was updated so the browser only prioritizes the appropriate image for the current viewport.
+## Step 3 — Responsive Preload
+
+The preload implementation was updated so that the browser can preload the correct LCP image depending on the viewport width.
 
 ### Mobile
 
@@ -64,7 +132,7 @@ The preload logic was updated so the browser only prioritizes the appropriate im
 <link
     rel="preload"
     as="image"
-    href="/wp-content/uploads/2026/08/slider02-900x480-1.png"
+    href="https://elvakala.com/wp-content/uploads/2026/08/slider02-900x480-1.png"
     media="(max-width: 767px)"
     fetchpriority="high">
 ```
@@ -75,97 +143,124 @@ The preload logic was updated so the browser only prioritizes the appropriate im
 <link
     rel="preload"
     as="image"
-    href="/wp-content/uploads/2026/07/slider02.png"
+    href="https://elvakala.com/wp-content/uploads/2026/07/slider02.png"
     media="(min-width: 768px)"
     fetchpriority="high">
 ```
 
-The final PHP implementation is stored in:
+The implementation is stored in:
 
 ```text
 snippets/performance/preload-homepage-lcp.php
 ```
 
+---
+
 ## Verification
 
-The generated homepage HTML was inspected to confirm that both responsive preload declarations are present in the initial document.
-
-Mobile preload:
+Chrome DevTools Network confirmed that the mobile viewport loads:
 
 ```text
-media="(max-width: 767px)"
+slider02-900x480-1.png
 ```
 
-Desktop preload:
+instead of the full desktop slider image.
 
-```text
-media="(min-width: 768px)"
-```
+![Mobile slider network request](./07-mobile-slider-network.png)
 
-This allows the browser to discover the correct LCP image immediately without waiting for Elementor or Swiper to fully initialize.
+The generated HTML was also inspected to verify that both responsive preload declarations are present.
 
-Network inspection also confirmed that the mobile version of the slider image is loaded on mobile.
+![Responsive preload HTML](./08-responsive-preload-html.png)
 
-## Lighthouse Result
+---
 
-A Lighthouse test after implementing the mobile image and responsive preload produced:
+## Result After Mobile Optimization
+
+A Lighthouse test after implementing the mobile-specific image and responsive preload produced:
 
 | Metric | Result |
 |---|---:|
 | Performance | 51 |
-| First Contentful Paint | 3.6 s |
-| Largest Contentful Paint | 11.2 s |
-| Total Blocking Time | 340 ms |
-| Cumulative Layout Shift | 0.007 |
+| FCP | 3.6 s |
+| LCP | 11.2 s |
+| TBT | 340 ms |
+| CLS | 0.007 |
 | Speed Index | 11.3 s |
 
-## LCP Breakdown
+![Lighthouse after mobile optimization](./05-lighthouse-after-mobile-optimization.png)
 
-Lighthouse reported the following LCP breakdown:
+The LCP breakdown after the changes showed:
 
-| Subpart | Duration |
-|---|---:|
-| Time to First Byte | 520 ms |
-| Resource Load Delay | 100 ms |
-| Resource Load Duration | 8,390 ms |
-| Element Render Delay | 20 ms |
+| Subpart | Before | After |
+|---|---:|---:|
+| Resource Load Delay | 1,810 ms | 100 ms |
+| Resource Load Duration | 13,340 ms | 8,390 ms |
+| Element Render Delay | 10 ms | 20 ms |
 
-The most important improvement was the reduction of **Resource Load Delay to approximately 100 ms**.
+![LCP breakdown after optimization](./06-lcp-breakdown-after.png)
 
-This confirms that the browser is now discovering the LCP image very early.
+---
 
-The remaining LCP time is primarily associated with the actual image transfer duration rather than late discovery of the resource.
+## Key Improvements
 
-## Technical Result
+### Resource discovery
 
-Two separate LCP bottlenecks were identified:
+Resource Load Delay:
 
-1. **Late discovery of the LCP image**
-   - Improved by explicitly preloading the slider image in the document `<head>`.
+```text
+1,810 ms → 100 ms
+```
 
-2. **Large desktop image being downloaded on mobile**
-   - Improved by creating a dedicated mobile image and using responsive preload rules.
+The browser now starts loading the LCP resource much earlier.
 
-The browser can now discover the LCP resource almost immediately and mobile devices no longer need to use the full desktop slider image.
+### Image transfer
 
-## Related Performance Findings
+Resource Load Duration:
 
-During testing, other Lighthouse performance issues were also identified, including:
+```text
+13,340 ms → 8,390 ms
+```
 
-- Render-blocking requests
+Using a dedicated mobile image significantly reduced the amount of image data that must be transferred on mobile.
+
+### Overall LCP
+
+Observed Lighthouse LCP:
+
+```text
+20.7 s → 11.2 s
+```
+
+Lighthouse scores vary between runs, so the LCP value itself should not be treated as a perfectly controlled benchmark.
+
+The LCP breakdown provides stronger evidence of the optimization: resource discovery became substantially faster and the mobile image reduced transfer time.
+
+---
+
+## Remaining Performance Work
+
+The homepage still has other independent performance bottlenecks, including:
+
 - Font display
-- Google Fonts / Roboto loading
+- Render-blocking requests
 - Image delivery
 - Cache lifetime
 - Forced reflow
 - Network dependency tree
 
-These are separate optimization tasks and should be handled independently from the homepage LCP image optimization.
+These should be optimized separately rather than mixed with the LCP slider implementation.
+
+---
 
 ## Status
 
 **Implemented and tested**
 
-The responsive LCP preload and mobile-specific slider image are currently active.
+The homepage now uses:
 
-> Lighthouse scores can vary significantly between individual runs. The primary success metric for this optimization is the reduction in LCP Resource Load Delay and confirmation that the correct responsive slider image is loaded for each viewport.
+- A dedicated mobile LCP image
+- The original desktop LCP image for larger screens
+- Responsive preload rules
+- `fetchpriority="high"` on the preload resources
+
+The next performance tasks should be handled independently from this optimization.

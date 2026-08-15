@@ -1,120 +1,229 @@
-# ELVA Render-Blocking Resource Optimization
+# Render-Blocking Resources Optimization
 
-This directory documents the investigation and optimization work related to Lighthouse **Render blocking requests** on the Elva Kala homepage.
+## Overview
 
-The goal of this task was to identify CSS, JavaScript, and font resources that delay the initial render and reduce their impact without breaking Elementor, theme functionality, or frontend styling.
+This optimization was performed as part of the performance improvement work on the Elvakala WordPress website.
 
-## Initial Lighthouse Audit
+Lighthouse reported a significant number of render-blocking resources, including:
 
-The Lighthouse audit reported approximately:
-
-**1,160 ms estimated savings**
-
-from render-blocking resources.
-
-The reported resources included:
-
+- Theme CSS
+- WooCommerce CSS
+- Elementor CSS
+- Elementor Pro CSS
 - jQuery
 - jQuery Migrate
-- Elementor frontend styles
-- Elementor widget styles
-- Swiper styles
-- Font Awesome styles
-- Theme stylesheets
-- WooCommerce styles
-- Other plugin and theme CSS assets
+- Font Awesome
+- Elementor Icons
+- Google Fonts
 
-## Investigation
+These resources were delaying the initial rendering of the page and negatively affecting FCP and LCP.
 
-The render-blocking list was reviewed resource by resource instead of globally deferring or removing assets.
+---
 
-This was necessary because several of the listed files are required by Elementor, WooCommerce, the theme, and interactive frontend components.
+## Initial Lighthouse Report
 
-Aggressive defer or removal could break:
+Lighthouse initially reported approximately:
 
-- Navigation
-- Sliders
-- Product components
-- Elementor widgets
-- WooCommerce layouts
-- Icons
-- Responsive behavior
+- Render-blocking potential savings: **1,580 ms**
+- Large number of CSS resources in the critical rendering path
+- External Google Fonts request
+- Font display delay
+- Font Awesome and Elementor icon fonts contributing to font rendering delay
 
-## Elementor Performance Settings
+The affected resources included files from:
 
-Elementor performance settings were reviewed and kept enabled where appropriate.
+- `mweb-digiland-pro`
+- WooCommerce
+- Elementor
+- Elementor Pro
+- Font Awesome
+- Elementor Icons
+- Google Fonts
 
-The recorded configuration is documented in:
+Screenshots:
 
-`04-elementor-performance-settings.png`
+- `01-render-blocking-before.png`
+- `02-render-blocking-assets.png`
+- `03-render-blocking-assets-continued.png`
 
-This includes Elementor's external CSS loading and other frontend performance-related settings.
+---
 
-## Font Rendering Optimization
+## Google Fonts Investigation
 
-During this investigation, three icon font definitions were identified as contributing to rendering delays:
+Chrome DevTools showed that a Roboto stylesheet was being loaded from:
 
-- Font Awesome 5 Brands
-- Font Awesome 5 Free
-- Elementor eicons
+`fonts.googleapis.com`
 
-The original definitions either used `font-display: block` or did not define `font-display`.
+The request was identified in the page source as:
 
-A custom override was added using:
+`google-Roboto-css`
+
+The stylesheet then loaded Roboto `.woff2` font files from Google's font servers.
+
+This was unnecessary because the website already uses locally hosted fonts for its primary typography.
+
+Screenshots:
+
+- `04-google-font-source.png`
+- `05-google-font-network.png`
+- `06-google-font-css.png`
+
+---
+
+## Local Font Configuration
+
+The website already contains locally hosted Arad font files with multiple font weights.
+
+The local font declarations use `@font-face` and include:
 
 `font-display: swap`
 
-Implementation:
+Available weights include:
 
-`/snippets/performance/font-display-swap.css`
+- 100 — Thin
+- 200 — ExtraLight
+- 300 — Light
+- 400 — Regular
+- 500 — Medium
+- 600 — SemiBold
+- 700 — Bold
+- 800 — ExtraBold
+- 900 — Black
 
-After this change, the Lighthouse **Font display** issue disappeared from the performance insights.
+Screenshot:
 
-## Screenshots
+- `07-local-arad-font.png`
 
-### `01-render-blocking-overview.png`
+Using the local font files avoids unnecessary dependency on external Google Fonts for the site's main typography.
 
-Shows the Lighthouse **Render blocking requests** audit and the estimated saving of approximately **1,160 ms**.
+---
 
-### `02-render-blocking-assets-part-1.png`
+## Icon Font Investigation
 
-Shows the first section of the blocking asset list, including JavaScript and CSS resources.
+Lighthouse also reported font-display delays related to icon fonts.
 
-### `03-render-blocking-assets-part-2.png`
+The following fonts were identified through Chrome DevTools:
 
-Shows the remaining render-blocking theme, Elementor, WooCommerce, and plugin assets.
+### Font Awesome Brands
 
-### `04-elementor-performance-settings.png`
+`fa-brands-400.woff2`
 
-Documents the Elementor performance settings used during this optimization phase.
+Loaded through Elementor's Font Awesome stylesheet.
+
+Screenshot:
+
+- `08-font-awesome-brands-source.png`
+
+### Font Awesome Solid
+
+`fa-solid-900.woff2`
+
+Loaded through Elementor's Font Awesome stylesheet.
+
+Screenshot:
+
+- `09-font-awesome-solid-source.png`
+
+### Elementor Icons
+
+`eicons.woff2`
+
+Loaded through:
+
+`elementor-icons.min.css`
+
+Screenshot:
+
+- `10-elementor-eicons-source.png`
+
+These fonts were investigated separately from the site's primary Arad font because they are required for icons used by Elementor and other interface components.
+
+---
+
+## Font Display
+
+Lighthouse reported significant potential savings from font rendering.
+
+Reported fonts included:
+
+- `fa-brands-400.woff2`
+- `fa-solid-900.woff2`
+- `eicons.woff2`
+
+The goal of the optimization was to prevent invisible text/icon rendering while font files were loading and reduce the impact of font loading on the critical rendering path.
+
+Related optimization code is maintained separately under:
+
+`snippets/performance/font-display-swap.css`
+
+Screenshot:
+
+- `11-font-display-before.png`
+
+---
+
+## Elementor Performance Settings
+
+Elementor performance-related settings were reviewed during the optimization process.
+
+The configuration included:
+
+- CSS Print Method: External File
+- Optimized Image Loading: Enabled
+- Optimized Gutenberg Loading: Enabled
+- Lazy Load Background Images: Enabled
+- Google Fonts Loading: Disabled
+- Element Cache: 1 Day
+
+Disabling Elementor's Google Fonts loading helps prevent Elementor from introducing additional external Google Fonts requests.
+
+---
 
 ## Result
 
-The render-blocking investigation identified which resources are safe to optimize and which are required for frontend functionality.
+After the changes, Lighthouse tests confirmed that the site remained functional and the optimization work reduced some of the previously identified font and render-blocking issues.
 
-Font-related render blocking was improved through a targeted `font-display: swap` override.
+Because Lighthouse results vary between individual runs, performance scores were not treated as the sole measurement of success.
 
-The broader **Render blocking requests** audit was not fully eliminated because several remaining assets are required by the active theme, Elementor, WooCommerce, and plugins.
+Tests during this optimization showed Performance scores in approximately the **51–53** range, while:
 
-No aggressive global defer strategy was applied in order to avoid frontend regressions.
+- Best Practices remained at **100**
+- Accessibility remained around **85–86**
+- CLS remained low
+- Total Blocking Time remained in the few-hundred-millisecond range
 
-## Validation
+The remaining Lighthouse report still showed other performance bottlenecks, including:
 
-After changes, the following were checked:
+- Document request latency
+- Remaining render-blocking resources
+- Image delivery
+- Cache lifetime
+- Forced reflow
+- Network dependency chains
 
-- Elementor widgets
-- Navigation and menus
-- Icons
-- Sliders
-- WooCommerce components
-- Mobile layout
-- Desktop layout
-- Responsive behavior
+These issues are handled as separate performance optimization tasks.
 
-## Related Code
+Screenshots:
 
-The related optimization code is stored at:
+- `12-after-fix-lighthouse.png`
+- `13-after-fix-insights.png`
 
-`/snippets/performance/font-display-swap.css`
+---
 
-This keeps executable optimization code separate from Lighthouse documentation and screenshots.
+## Important Notes
+
+This optimization intentionally avoids directly modifying Elementor, Elementor Pro, WooCommerce, or theme plugin files.
+
+Direct modification of plugin files would be overwritten during future updates.
+
+Custom performance fixes are therefore maintained separately in the repository whenever possible.
+
+---
+
+## Status
+
+**Investigated and partially optimized**
+
+Render-blocking resources have not been completely eliminated.
+
+Remaining CSS and JavaScript resources require separate analysis before defer, delay, removal, or critical-CSS strategies are applied, because aggressive optimization may break Elementor, WooCommerce, menus, sliders, filters, or other interactive components.

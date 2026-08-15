@@ -1,0 +1,39 @@
+/* =====================================
+   ELVA — Elementor Icon Font Performance
+===================================== */
+
+/*
+ * Font Awesome 5 Brands
+ * Uses font-display: swap to avoid blocking text and icon rendering.
+ */
+@font-face {
+    font-family: "Font Awesome 5 Brands";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("/wp-content/plugins/elementor/assets/lib/font-awesome/webfonts/fa-brands-400.woff2") format("woff2");
+}
+
+/*
+ * Font Awesome 5 Free — Solid
+ * Uses font-display: swap to improve rendering behavior.
+ */
+@font-face {
+    font-family: "Font Awesome 5 Free";
+    font-style: normal;
+    font-weight: 900;
+    font-display: swap;
+    src: url("/wp-content/plugins/elementor/assets/lib/font-awesome/webfonts/fa-solid-900.woff2") format("woff2");
+}
+
+/*
+ * Elementor Icons
+ * Uses font-display: swap for Elementor's native icon font.
+ */
+@font-face {
+    font-family: "eicons";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("/wp-content/plugins/elementor/assets/lib/eicons/fonts/eicons.woff2?5.53.0") format("woff2");
+}

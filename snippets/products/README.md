@@ -78,15 +78,15 @@ On smaller screens:
 
 #### Desktop
 
-![Product filter button on desktop](product-filter-v4-desktop-1.png)
+<img src="product-filter-v4-desktop-1.png" width="300">
 
-![Product filter drawer on desktop](product-filter-v4-desktop-2.png)
+<img src="product-filter-v4-desktop-2.png" width="300">
 
 #### Mobile
 
-![Product filter button on mobile](product-filter-v4-mobile-1.jpg)
+<img src="product-filter-v4-mobile-1.jpg" width="300">
 
-![Product filter drawer on mobile](product-filter-v4-mobile-2.jpg)
+<img src="product-filter-v4-mobile-2.jpg" width="300">
 
 ---
 
@@ -110,13 +110,13 @@ The stylesheet is scoped mainly to `.tax-product_cat` so the changes target prod
 - Adds a red hover state to the wishlist heart
 - Applies ELVA KALA's blue UI color palette consistently across archive controls
 
-### Before
+### Shop Archive — Before
 
-![Shop archive before](shop-archive-fix-v2-before.jpg)
+<img src="shop-archive-fix-v2-before.jpg" width="300">
 
-### After
+### Shop Archive — After
 
-![Shop archive after](shop-archive-fix-v2-after.png)
+<img src="shop-archive-fix-v2-after.png" width="300">
 
 ---
 
@@ -187,15 +187,15 @@ Related-product cards receive a subtle hover interaction with:
 
 ### Screenshots
 
-#### Before
+### Single Product — Before
 
-![Single product page before](single-product-v2-before-1.png)
+<img src="single-product-v2-before-1.png" width="300">
 
-#### After
+### Single Product — After
 
-![Single product page after - product summary](single-product-v2-after-1.png)
+<img src="single-product-v2-after-1.png" width="300">
 
-![Single product page after - tabs and related products](single-product-v2-after-2.png)
+<img src="single-product-v2-after-2.png" width="300">
 
 ---
 

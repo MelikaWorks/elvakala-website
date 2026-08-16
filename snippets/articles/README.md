@@ -62,21 +62,21 @@ On tablet and mobile devices, the desktop grid is disabled and the article retur
 
 #### Before
 
-<img src="blog-archive-before(2).png" width="300">
+<img src="blog-archive-before.png" width="300">
 
 #### After
 
-<img src="blog-archive-after(2).png" width="300">
+<img src="blog-archive-after.png" width="300">
 
 ### Single Post
 
 #### Before
 
-<img src="single-post-before(2).png" width="300">
+<img src="single-post-before.png" width="300">
 
 #### After
 
-<img src="single-post-after(1).png" width="300">
+<img src="single-post-after.png" width="300">
 
 ## Scope
 

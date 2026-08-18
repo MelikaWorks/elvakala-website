@@ -1,0 +1,7 @@
+selector .vc_deal_time[data-date^="1970-01-01"] {
+    display: none !important;
+}
+
+selector .timer_wrap > .pack-theme {
+    display: none !important;
+}

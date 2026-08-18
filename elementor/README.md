@@ -1,405 +1,187 @@
 # ELVA KALA — Elementor Customizations
 
-This folder contains custom Elementor-related implementations and visual customizations used across the ELVA KALA website.
+This directory contains Elementor-related frontend customizations developed for the ELVA KALA website.
 
-The files in this directory document custom layouts, styling, responsive behavior, and interface improvements created on top of the existing Elementor-based website.
+The customizations are organized by page or component so that each implementation, supporting code, screenshots, and documentation can be maintained independently.
 
-The customizations cover several major frontend areas rather than a single component, including the website header, main navigation and mega menu, About page, Contact page, and other Elementor-built sections.
-
-Screenshots stored alongside the implementation files are included as visual documentation of the final layouts and, where applicable, previous states used during development.
+The work in this directory extends the existing Elementor-based website without replacing Elementor itself.
 
 ---
 
-## Scope
+## Directory Structure
 
-The Elementor customizations in this folder cover the following areas:
+### `about-us/`
 
-- Main website header
-- Desktop header layout refinements
-- Responsive header behavior
-- Main navigation
-- Product category mega menu
-- About ELVA KALA page
-- Contact ELVA KALA page
-- Elementor-built homepage sections
+Custom Elementor implementation for the ELVA KALA About page.
+
+Includes the page structure and visual sections used to present:
+
+- Company introduction
+- Business story
+- Activity areas
+- Services and customer benefits
+- FAQ section
+- Responsive layouts
+
+---
+
+### `contact-us/`
+
+Custom Elementor implementation for the ELVA KALA Contact page.
+
+Includes:
+
+- Contact information cards
+- Store address
+- Sales, management, and support contact details
+- Working hours
+- Online communication channels
+- Social networks
+- Embedded store map
 - Responsive layout adjustments
-- Visual consistency with the ELVA KALA design system
-
-The primary interface color used throughout these customizations is:
-
-`#034A73`
 
 ---
 
-# Header Customization
+### `footer-columns/`
 
-The ELVA KALA header was customized to improve the layout of the logo, search area, navigation links, user account controls, shopping cart, phone information, and category navigation.
+Customizations related to the ELVA KALA website footer.
 
-The final layout was designed to provide a cleaner and more compact desktop header while preserving the existing Elementor structure.
+This section contains the Elementor structure and styling used for the footer information columns, including:
 
-The header customization includes:
+- Business information
+- Customer service links
+- Contact details
+- Trust and certification elements
+- Social media links
+- Responsive footer layout
+
+---
+
+### `header-responsive/`
+
+Responsive and layout refinements for the Elementor-based website header.
+
+Includes adjustments for:
 
 - Logo positioning
-- Search field alignment
-- Login/account button styling
-- Shopping cart placement
-- Phone icon and contact information
-- Main navigation alignment
-- Product categories button
-- Responsive spacing adjustments
-- Desktop and medium-screen layout refinements
+- Search bar
+- Account controls
+- Shopping cart
+- Phone information
+- Header spacing
+- Medium-width desktop layouts
+- Tablet behavior
+- Responsive breakpoints
 
-During development, different arrangements of the account, cart, and contact controls were tested before reaching the final layout.
-
-The screenshots in this folder document the resulting header structure and responsive behavior.
+These adjustments were created to prevent the desktop header from becoming crowded before the mobile breakpoint.
 
 ---
 
-# Main Navigation
+### `home-page/`
 
-The main Elementor navigation uses a custom RTL layout designed for the Persian ELVA KALA storefront.
+Custom Elementor sections used on the ELVA KALA homepage.
 
-The navigation includes:
+Includes homepage-specific layout and presentation refinements that follow the ELVA KALA visual system.
 
-- Product categories entry point
-- Discounts link
-- Articles link
-- About page link
-- Contact page link
-- RTL alignment
-- Compact typography
-- Controlled spacing between navigation items
-- Responsive adjustments for medium screen widths
+Depending on the component, this directory may contain:
 
-The navigation is integrated directly into the custom header and visually follows the ELVA KALA blue-and-white interface.
+- Custom section layouts
+- Responsive adjustments
+- Visual refinements
+- Supporting screenshots
 
 ---
 
-# Product Category Mega Menu
+### `main-menu/`
 
-A custom multi-level mega menu is used for browsing the ELVA KALA product catalog.
+Custom main navigation and product category mega menu implementation.
 
-The implementation uses the following main structures:
+Includes:
 
-- `.elva-menu-wrap`
-- `.elva-top-menu`
-- `.elva-dk-menu`
-- `.elva-dk-trigger`
-- `.elva-dk-panel`
-- `.elva-dk-sidebar`
-- `.elva-dk-content`
-- `.elva-tab`
-- `.elva-col`
+- Main navigation bar styling
+- Product category trigger
+- Multi-level mega menu
+- Category sidebar
+- Active and hover states
+- Multi-column category content
+- RTL layout
+- Tablet and medium-screen adaptations
+- Responsive menu behavior
 
-The category trigger uses the ELVA KALA primary blue color and opens the full category navigation panel.
-
----
-
-## Mega Menu Sidebar
-
-The left/right category navigation area uses `.elva-dk-sidebar`.
-
-It provides:
-
-- Main product category navigation
-- Active category states
-- Hover states
-- Directional indicators
-- Visual highlighting using the ELVA KALA blue color
-- Direct links for supported category entries
-
-The sidebar allows users to move between major product groups while keeping the detailed submenu visible in the main panel.
+The implementation depends on the Elementor menu structure already present on the website.
 
 ---
 
-## Mega Menu Content
+### `special-offer-slider-timer-fix/`
 
-The detailed category content is displayed through `.elva-tab` containers.
+Elementor-specific fix for the special-offer slider timer.
 
-Only the active category tab is displayed.
+This directory contains the code and supporting documentation related to correcting the timer behavior used in the special-offer slider.
 
-On large desktop screens the submenu uses a four-column grid:
-
-`grid-template-columns: repeat(4, 1fr);`
-
-The columns contain grouped product links and section headings.
-
-This structure is used to expose deeper product categories without forcing users through multiple separate pages.
+The implementation is kept separately because it addresses a specific Elementor component rather than a general page layout.
 
 ---
 
-## Mega Menu Interaction
+# Design System
 
-On desktop, the panel is primarily displayed through hover interaction.
-
-The menu also includes active states and transitions for category navigation.
-
-For tablet-sized layouts, `:focus-within` support is also included to improve interaction behavior.
-
----
-
-# Responsive Mega Menu
-
-The mega menu contains dedicated responsive rules for different viewport sizes.
-
-For tablet-sized screens, the menu is reduced from four columns to two:
-
-`grid-template-columns: repeat(2, 1fr);`
-
-Additional tablet adjustments include:
-
-- Reduced menu width
-- Reduced sidebar width
-- Smaller navigation typography
-- Smaller category trigger
-- Reduced content padding
-- Reduced gaps between navigation items
-
-At smaller widths, the submenu falls back to a single-column structure.
-
-The menu panel also uses viewport-relative sizing to prevent horizontal overflow.
-
----
-
-# Header Polish
-
-Additional responsive refinements were applied after the initial navigation implementation.
-
-These adjustments reduce unnecessary header height and improve spacing on medium-width screens.
-
-They include:
-
-- Reduced navigation height
-- Smaller category button
-- Reduced navigation gaps
-- Smaller link typography
-- Reduced secondary text size
-- Better fit between approximately `769px` and `1150px`
-
-These rules were added specifically to prevent the desktop header from becoming crowded before reaching the mobile breakpoint.
-
----
-
-# About ELVA KALA Page
-
-The About page was created as a custom Elementor-based presentation of the ELVA KALA business.
-
-The final page includes several structured content sections.
-
----
-
-## Hero Section
-
-The About page begins with a large visual introduction containing:
-
-- ELVA KALA branding
-- "About ELVA" heading
-- Introductory text
-- Call-to-action button
-- Large storefront/business image
-- Curved visual composition matching the ELVA KALA brand colors
-
----
-
-## Our Story
-
-The "Our Story" section presents the company's background and business history.
-
-The layout combines:
-
-- Company/store imagery
-- Long-form descriptive content
-- RTL typography
-- Clear section hierarchy
-
-The design keeps the imagery and text visually balanced on large screens.
-
----
-
-## Business Areas
-
-The About page also includes a visual overview of ELVA KALA product and service areas.
-
-The displayed categories include areas such as:
-
-- Faucets
-- Kitchen products
-- Sanitary products
-- Cooling systems
-- Heating systems
-- Pool equipment
-
-Each category is represented visually to make the company's activity areas easier to understand.
-
----
-
-## Services and Benefits
-
-The page contains a dedicated section explaining ELVA KALA customer services and purchase benefits.
-
-The layout uses separate service cards with icons and explanatory text.
-
-Examples represented in the layout include:
-
-- Fast shipping
-- Professional consultation
-- Warranty and after-sales services
-- Return policy
-
----
-
-## Frequently Asked Questions
-
-A dedicated FAQ section is included on the About page.
-
-The questions use an accordion-style layout so that answers can be expanded individually without displaying all content at once.
-
-The FAQ area follows the same visual language as the rest of the page.
-
----
-
-# Contact ELVA KALA Page
-
-The Contact page was redesigned as a structured Elementor-based contact interface instead of relying on a simple text block.
-
-The final page contains several contact methods and business information blocks.
-
----
-
-## Contact Information Cards
-
-The upper section contains individual cards for important contact channels.
-
-The layout includes information such as:
-
-- Main store address
-- Store phone number
-- Sales department phone
-- Management contact
-- Support contact
-
-Each card uses:
-
-- A dedicated icon
-- Contact title
-- Contact detail
-- Supporting description
-- Call or map action where appropriate
-
----
-
-## Working Hours
-
-A dedicated section displays ELVA KALA working hours.
-
-This information is visually separated from the other contact channels to make it easy to locate.
-
----
-
-## Online Contact
-
-The page includes online communication information and social/contact channels.
-
-The layout includes dedicated sections for:
-
-- Online response/contact
-- Email
-- Social networks
-
-Social icons are presented in a compact visual group consistent with the main ELVA KALA branding.
-
----
-
-## Store Map
-
-The Contact page includes an embedded Google Maps section showing the ELVA KALA store location.
-
-The map occupies the full content width below the contact information sections and provides a direct visual reference for the physical store address.
-
----
-
-# Elementor Homepage Sections
-
-Some custom Elementor work documented in this folder is also used on the ELVA KALA homepage.
-
-These sections follow the same design language used throughout the redesigned pages:
-
-- ELVA KALA blue interface elements
-- White cards and content containers
-- Rounded corners
-- RTL typography
-- Responsive layouts
-- Consistent spacing
-- Clear section hierarchy
-
-The screenshots stored in this folder document the implemented Elementor layouts and their final appearance.
-
----
-
-# Visual Design System
-
-The Elementor customizations intentionally use a consistent visual system throughout the website.
+The Elementor customizations follow the ELVA KALA frontend visual language.
 
 Primary interface color:
 
 `#034A73`
 
-Common design characteristics include:
+Common characteristics include:
 
-- White content backgrounds
-- Light gray page backgrounds
-- Rounded content containers
-- Subtle borders
-- Soft shadows
+- RTL layouts
+- White content cards
+- Light gray backgrounds
+- Rounded containers
+- Subtle borders and shadows
 - Blue headings and controls
-- RTL content alignment
-- Responsive layouts
-- Consistent spacing between sections
-
-This allows custom Elementor sections to visually match the rest of the ELVA KALA storefront.
+- Responsive spacing
+- Consistent typography
+- Structured visual hierarchy
 
 ---
 
 # Responsive Design
 
-The custom Elementor implementations were tested and adjusted across different viewport sizes.
+The custom Elementor implementations include dedicated adjustments for multiple viewport ranges.
 
-Responsive work includes:
+The responsive work covers:
 
-- Desktop layouts
-- Medium-width desktop layouts
-- Tablet layouts
-- Mobile layouts
+- Large desktop
+- Medium-width desktop
+- Tablet
+- Mobile
 
-Several components contain dedicated breakpoints because the original desktop layout required additional adjustments before reaching standard mobile widths.
+Some components use additional breakpoints because the original desktop Elementor layout required adjustments before reaching the standard mobile breakpoint.
 
-This is particularly important for:
+This is particularly relevant to:
 
 - Header controls
-- Main navigation
+- Navigation
 - Mega menu
-- Multi-column content
-- Contact cards
-- Long-form content sections
+- Multi-column sections
+- Contact layouts
+- Footer columns
 
 ---
 
 # Screenshots
 
-The image files stored in this folder are development documentation for the Elementor customizations.
+Screenshots are stored inside the relevant component directories.
 
-Depending on the component, they show:
+They are used as development documentation and may show:
 
 - Final implemented layouts
-- Desktop appearance
+- Previous states
+- Desktop layouts
 - Responsive layouts
-- Header layout changes
-- Mega menu appearance
-- About page implementation
-- Contact page implementation
-- Other Elementor section results
+- Before/after comparisons
+- Specific interface fixes
 
-These screenshots are intended to make the repository understandable without requiring immediate access to the live WordPress installation.
+Keeping screenshots next to their related implementation makes each customization easier to understand independently.
 
 ---
 
@@ -407,31 +189,28 @@ These screenshots are intended to make the repository understandable without req
 
 These customizations were created specifically for the Elementor structure used by the ELVA KALA website.
 
-Some styles depend on existing Elementor containers, widgets, and custom CSS classes.
+Some implementations depend on existing:
 
-Changing Elementor structure or class names may require corresponding selector updates.
+- Elementor containers
+- Elementor widgets
+- Custom classes
+- Element IDs
+- Theme-generated markup
 
-The mega menu CSS does not generate the underlying menu content by itself. It styles and controls the presentation of the menu structure already present in the Elementor implementation.
+Changing the Elementor structure may require corresponding selector or script updates.
 
-The responsive rules should be preserved when modifying the header or navigation because several breakpoints were added specifically to prevent layout problems on medium-width screens.
+Custom code should therefore be reviewed after major Elementor, Elementor Pro, or theme updates.
 
 ---
 
-# Purpose
+# Repository Organization
 
-The purpose of these Elementor customizations is to replace or refine generic theme layouts with interfaces specifically designed for ELVA KALA.
+This directory contains only Elementor-related customizations.
 
-The implementation provides:
+Other custom website code is organized separately in the repository, including:
 
-- A custom ELVA KALA header
-- Refined navigation
-- Product category mega menu
-- Responsive desktop and tablet behavior
-- Custom About page
-- Custom Contact page
-- Consistent Elementor section styling
-- Improved visual hierarchy
-- Better presentation of business and contact information
-- A unified frontend design across major website sections
+- `snippets/` — independent WordPress and WooCommerce custom snippets
+- `Plugin-Customizations/` — custom behavior added around third-party plugins
+- `performance/` — performance optimization work and related documentation
 
-Together, these files document the custom Elementor frontend work developed for the ELVA KALA website.
+This separation keeps page-builder customizations independent from backend snippets, plugin-specific extensions, and performance work.

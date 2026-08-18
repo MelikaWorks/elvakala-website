@@ -1,23 +1,23 @@
 /**
  * ELVAKALA - Installment Sales Rules
  *
- * 1) فروش اقساطی دناپی فقط برای استان قزوین
- * 2) جلوگیری سمت سرور از ثبت سفارش اقساطی خارج قزوین
- * 3) هشدار زنده در Checkout
- * 4) نمایش شرایط اقساط روی صفحه محصول
- * 5) نمایش ارسال رایگان قزوین زیر همان شرایط
- * 6) نمایش مهلت تحویل اصل چک در صفحه پرداخت پیش‌پرداخت
+  * 1) DenaPay installment sales are available only in Qazvin province
+ * 2) Server-side validation prevents installment orders outside Qazvin province
+ * 3) Live warning displayed during Checkout
+ * 4) Installment sales terms displayed on product pages
+ * 5) Free shipping information for Qazvin displayed with the installment terms
+ * 6) Original check delivery deadline displayed on the deposit payment page
  */
 
 
 /* =========================================================
  * 1) SERVER-SIDE VALIDATION
- * فروش اقساطی فقط استان قزوین
+ * Installment purchases are available only in Qazvin province
  * ========================================================= */
 
 add_action( 'woocommerce_after_checkout_validation', function( $data, $errors ) {
 
-    // فقط برای روش پرداخت دناپی
+    // Only apply to the DenaPay payment method
     if (
         empty( $data['payment_method'] ) ||
         $data['payment_method'] !== 'denapay_cheque'
@@ -25,7 +25,7 @@ add_action( 'woocommerce_after_checkout_validation', function( $data, $errors ) 
         return;
     }
 
-    // اگر ارسال به آدرس دیگری فعال است، استان ارسال را بررسی کن
+    // If shipping to a different address is enabled, check the shipping province
     $ship_to_different = ! empty( $_POST['ship_to_different_address'] );
 
     if ( $ship_to_different ) {
@@ -41,7 +41,7 @@ add_action( 'woocommerce_after_checkout_validation', function( $data, $errors ) 
             : '';
     }
 
-    // کد استان قزوین در ووکامرس سایت الوا = GZN
+    // Qazvin province code in Elvakala WooCommerce = GZN
     if ( $state !== 'GZN' ) {
 
         $errors->add(
@@ -55,7 +55,7 @@ add_action( 'woocommerce_after_checkout_validation', function( $data, $errors ) 
 
 /* =========================================================
  * 2) PRODUCT PAGE NOTICE
- * شرایط فروش اقساطی روی تمام صفحات محصول
+ * Installment sales terms on all product pages
  * ========================================================= */
 
 add_action( 'woocommerce_after_add_to_cart_form', function() {
@@ -243,8 +243,9 @@ add_action( 'wp_head', function() {
 /* =========================================================
  * 4) LIVE CHECKOUT MESSAGES
  *
- * - وقتی دناپی انتخاب شده، شرایط قزوین همیشه نمایش داده شود
- * - اگر استان غیر قزوین بود، هشدار قرمز نیز نمایش داده شود
+ * - Always display installment terms when DenaPay is selected
+ * - Display an additional warning when the selected province
+ *   is outside Qazvin
  * ========================================================= */
 
 add_action( 'wp_footer', function() {
@@ -270,7 +271,7 @@ add_action( 'wp_footer', function() {
 
                 let state = '';
 
-                // اگر ارسال به آدرس دیگری فعال باشد
+               // If shipping to a different address is enabled
                 if (
                     $('#ship-to-different-address-checkbox').length &&
                     $('#ship-to-different-address-checkbox').is(':checked')
@@ -284,9 +285,9 @@ add_action( 'wp_footer', function() {
                 }
 
 
-                /* -----------------------------------------
-                 * باکس دائمی شرایط فروش اقساطی
-                 * ----------------------------------------- */
+               /* -----------------------------------------
+               * Persistent installment sales terms box
+               * ----------------------------------------- */
 
                 if (!$('#elva-denapay-info').length) {
 
@@ -311,9 +312,9 @@ add_action( 'wp_footer', function() {
                 }
 
 
-                /* -----------------------------------------
-                 * هشدار استان غیر قزوین
-                 * ----------------------------------------- */
+              /* -----------------------------------------
+               * Non-Qazvin province warning
+               * ----------------------------------------- */
 
                 if (!$('#elva-denapay-qazvin-warning').length) {
 
@@ -353,8 +354,8 @@ add_action( 'wp_footer', function() {
 
 
                 /* -----------------------------------------
-                 * خطا فقط برای دناپی + استان غیر قزوین
-                 * ----------------------------------------- */
+                * Show error only for DenaPay + non-Qazvin province
+                * ----------------------------------------- */
 
                 if (
                     paymentMethod === 'denapay_cheque' &&
@@ -375,14 +376,14 @@ add_action( 'wp_footer', function() {
             }
 
 
-            // بعد از AJAX ووکامرس
+           // After WooCommerce AJAX updates
             $(document.body).on(
                 'updated_checkout',
                 elvaCheckDenaPayProvince
             );
 
 
-            // تغییر استان، روش پرداخت یا آدرس ارسال
+           // Province, payment method, or shipping address changes
             $(document).on(
                 'change',
                 'input[name="payment_method"], #billing_state, #shipping_state, #ship-to-different-address-checkbox',
@@ -390,7 +391,7 @@ add_action( 'wp_footer', function() {
             );
 
 
-            // اجرای اولیه
+            // Initial execution
             elvaCheckDenaPayProvince();
 
         });
@@ -405,8 +406,9 @@ add_action( 'wp_footer', function() {
 /* =========================================================
  * 5) ORDER-PAY PAGE NOTICE
  *
- * صفحه‌ای که بعد از ثبت سفارش اقساطی باز می‌شود
- * و مشتری ۳۰٪ پیش‌پرداخت را با زرین‌پال پرداخت می‌کند.
+ * Displayed after an installment order is created,
+ * when the customer proceeds to pay the 30% deposit
+ * through ZarinPal.
  * ========================================================= */
 
 add_action( 'woocommerce_pay_order_before_payment', function() {
@@ -428,8 +430,9 @@ add_action( 'woocommerce_pay_order_before_payment', function() {
     }
 
     /*
-     * فقط برای سفارش‌هایی که ابتدا با دناپی ساخته شده‌اند.
-     */
+   * Only for orders that were initially created using Denapay.
+   */
+
     if ( $order->get_payment_method() !== 'denapay_cheque' ) {
         return;
     }

@@ -60,6 +60,30 @@ The optimization includes:
 
 The remaining offscreen-image opportunity includes resources outside the scope of this targeted optimization, including third-party assets.
 
+
+### Digits Homepage Assets Optimization
+
+Directory:
+
+`digits-homepage-assets/`
+
+Contains the documentation and verification results related to removing unnecessary Digits authentication assets from the homepage.
+
+The optimization includes:
+
+* Removal of Digits login-specific JavaScript from the homepage
+* Removal of `scrollTo` and `libphonenumber` dependencies from the homepage
+* Removal of the Digits login stylesheet from the homepage
+* Homepage-only targeting to prevent changes to authentication pages
+* Chrome DevTools Network verification confirming the targeted assets are no longer loaded on the homepage
+* Lighthouse validation after optimization
+* Verification that required Digits JavaScript and CSS assets still load on the authentication page
+* Successful SMS OTP delivery and authentication testing
+* Reduction of the Lighthouse unused CSS opportunity from approximately **142 KiB to 127 KiB**
+
+The optimization is intentionally limited to the homepage. Digits authentication functionality remains fully available on the login and account pages.
+
+
 ## Related Code
 
 PHP and CSS snippets used to implement performance optimizations are stored separately in:

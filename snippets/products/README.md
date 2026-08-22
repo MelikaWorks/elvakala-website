@@ -2,19 +2,93 @@
 
 Custom WooCommerce front-end improvements developed for the ELVA KALA online store.
 
-This repository contains three focused customizations for WooCommerce product pages and product archives:
+This section of the repository contains focused customizations for WooCommerce product interfaces, including:
 
-- Product archive filter drawer
-- Product category archive styling fixes
-- Single product page styling
+- Product cards
+- Product archive pages
+- Product filtering
+- Single product pages
 
 The customizations were created to improve usability, visual consistency, responsive behavior, and integration with the existing ELVA KALA theme without rebuilding the WooCommerce templates from scratch.
 
 ---
 
-## Files
+## Directory Structure
 
-### `product-filter-drawer.php`
+```text
+products/
+├── product-cards/
+│   ├── mobile-product-card.css
+│   ├── mobile-product-card-archive-before.jpg
+│   ├── mobile-product-card-archive-after.jpg
+│   ├── mobile-product-card-homepage-before.jpg
+│   └── mobile-product-card-homepage-after.jpg
+│
+├── archive-product/
+│   ├── shop-archive-fix.css
+│   ├── shop-archive-fix-v2-before.jpg
+│   └── shop-archive-fix-v2-after.png
+│
+├── product-filters/
+│   ├── product-filter-drawer.php
+│   ├── product-filter-v4-desktop-1.png
+│   ├── product-filter-v4-desktop-2.png
+│   ├── product-filter-v4-mobile-1.jpg
+│   └── product-filter-v4-mobile-2.jpg
+│
+├── single-product/
+│   ├── single-product.css
+│   ├── single-product-v2-before-1.png
+│   ├── single-product-v2-after-1.png
+│   └── single-product-v2-after-2.png
+│
+└── README.md
+```
+
+---
+
+# Product Cards
+
+## `product-cards/mobile-product-card.css`
+
+Responsive fixes for ELVA KALA product cards used across product listings and homepage product sections.
+
+The existing theme switches product cards to a mobile-specific layout using the `general_mobile` class. In this layout, product prices were restricted by a fixed maximum width, causing longer prices to be truncated on smaller cards.
+
+The customization preserves the existing theme structure while correcting the mobile price and action layout.
+
+### Changes
+
+- Removes the restrictive mobile maximum width applied to product prices
+- Prevents long prices from being visually truncated
+- Preserves prices on a single line where sufficient space is available
+- Adjusts the product action area so the price has enough horizontal space
+- Keeps the Add to Cart action available without interfering with price display
+- Improves consistency across different product-card widths
+- Works with product cards used on both archive pages and homepage product sections
+- Avoids rebuilding or replacing the theme's existing product-card markup
+
+### Product Archive — Before
+
+<img src="product-cards/mobile-product-card-archive-before.jpg" width="300">
+
+### Product Archive — After
+
+<img src="product-cards/mobile-product-card-archive-after.jpg" width="300">
+
+### Homepage — Before
+
+<img src="product-cards/mobile-product-card-homepage-before.jpg" width="300">
+
+### Homepage — After
+
+<img src="product-cards/mobile-product-card-homepage-after.jpg" width="300">
+
+---
+
+# Product Filters
+
+## `product-filters/product-filter-drawer.php`
 
 Custom product filter drawer for WooCommerce archive pages.
 
@@ -26,7 +100,7 @@ Runs on:
 
 The drawer is added through WooCommerce and WordPress hooks and includes its own markup, styling, and JavaScript behavior.
 
-### Main features
+### Main Features
 
 - Adds a **Product Filter** button above the WooCommerce product loop
 - Opens filters inside a slide-in drawer
@@ -37,7 +111,7 @@ The drawer is added through WooCommerce and WordPress hooks and includes its own
 - Uses ARIA attributes for drawer state and dialog behavior
 - Includes reduced-motion support
 
-### Dynamic category navigation
+### Dynamic Category Navigation
 
 The category section changes according to the current archive.
 
@@ -49,7 +123,7 @@ On the main shop and other product archive pages, top-level product categories a
 
 The current category can also be visually marked as active.
 
-### WooCommerce filters
+### WooCommerce Filters
 
 The drawer uses native WooCommerce widgets where available:
 
@@ -62,7 +136,7 @@ Attribute filters are generated automatically from registered WooCommerce attrib
 
 This means additional WooCommerce attributes can become available in the drawer without manually creating a separate filter block for each attribute.
 
-### Responsive behavior
+### Responsive Behavior
 
 The drawer is designed for both desktop and mobile layouts.
 
@@ -78,19 +152,21 @@ On smaller screens:
 
 #### Desktop
 
-<img src="product-filter-v4-desktop-1.png" width="300">
+<img src="product-filters/product-filter-v4-desktop-1.png" width="300">
 
-<img src="product-filter-v4-desktop-2.png" width="300">
+<img src="product-filters/product-filter-v4-desktop-2.png" width="300">
 
 #### Mobile
 
-<img src="product-filter-v4-mobile-1.jpg" width="300">
+<img src="product-filters/product-filter-v4-mobile-1.jpg" width="300">
 
-<img src="product-filter-v4-mobile-2.jpg" width="300">
+<img src="product-filters/product-filter-v4-mobile-2.jpg" width="300">
 
 ---
 
-## `shop-archive-fix.css`
+# Product Archive
+
+## `archive-product/shop-archive-fix.css`
 
 CSS fixes and visual refinements for WooCommerce product category archives.
 
@@ -110,23 +186,25 @@ The stylesheet is scoped mainly to `.tax-product_cat` so the changes target prod
 - Adds a red hover state to the wishlist heart
 - Applies ELVA KALA's blue UI color palette consistently across archive controls
 
-### Shop Archive — Before
+### Product Archive — Before
 
-<img src="shop-archive-fix-v2-before.jpg" width="300">
+<img src="archive-product/shop-archive-fix-v2-before.jpg" width="300">
 
-### Shop Archive — After
+### Product Archive — After
 
-<img src="shop-archive-fix-v2-after.png" width="300">
+<img src="archive-product/shop-archive-fix-v2-after.png" width="300">
 
 ---
 
-## `single-product.css`
+# Single Product
+
+## `single-product/single-product.css`
 
 Custom styling for WooCommerce single-product pages.
 
 The stylesheet primarily uses `body.single-product` selectors to keep product-page changes isolated from other areas of the website.
 
-### Product header and summary
+### Product Header and Summary
 
 Includes styling for:
 
@@ -140,7 +218,7 @@ Includes styling for:
 
 The original theme's product service/info area is also explicitly hidden in the current version.
 
-### Product tabs and content
+### Product Tabs and Content
 
 Includes styling for:
 
@@ -153,7 +231,7 @@ Includes styling for:
 - Ordered lists
 - List markers
 
-### Product specifications
+### Product Specifications
 
 The WooCommerce product attributes/specifications area is restyled with:
 
@@ -166,7 +244,7 @@ The WooCommerce product attributes/specifications area is restyled with:
 
 The product description's **Read More** control is explicitly restored and styled so it remains visible in the product content area.
 
-### Customer reviews
+### Customer Reviews
 
 The review section includes styling for:
 
@@ -177,7 +255,7 @@ The review section includes styling for:
 - Review submission button
 - Rating percentage bars
 
-### Related products
+### Related Products
 
 Related-product cards receive a subtle hover interaction with:
 
@@ -187,19 +265,19 @@ Related-product cards receive a subtle hover interaction with:
 
 ### Screenshots
 
-### Single Product — Before
+#### Single Product — Before
 
-<img src="single-product-v2-before-1.png" width="300">
+<img src="single-product/single-product-v2-before-1.png" width="300">
 
-### Single Product — After
+#### Single Product — After
 
-<img src="single-product-v2-after-1.png" width="300">
+<img src="single-product/single-product-v2-after-1.png" width="300">
 
-<img src="single-product-v2-after-2.png" width="300">
+<img src="single-product/single-product-v2-after-2.png" width="300">
 
 ---
 
-## Design System
+# Design System
 
 The customizations follow the existing ELVA KALA visual identity.
 
@@ -219,31 +297,33 @@ The existing site typography is inherited rather than introducing a separate fon
 
 ---
 
-## Compatibility
+# Compatibility
 
 These customizations depend on the existing ELVA KALA WordPress/WooCommerce front end and its current HTML structure.
 
 `product-filter-drawer.php` specifically depends on WooCommerce functions, archive hooks, widgets, taxonomies, and product attributes.
 
-The CSS files also contain selectors targeting classes provided by the current theme and WooCommerce markup.
+The CSS files contain selectors targeting classes provided by the current theme and WooCommerce markup.
 
-Because of this, the code should not be considered a completely theme-independent WooCommerce plugin.
+The mobile product-card fix also depends on the theme's current responsive product-card structure, including the `general_mobile`, `product-detail-area`, `actions`, `price`, and `add-to-links` classes.
+
+Because of these dependencies, the code should not be considered a completely theme-independent WooCommerce plugin.
 
 Major theme or WooCommerce template changes should be tested before deploying the customizations unchanged.
 
 ---
 
-## Implementation Notes
+# Implementation Notes
 
 The project intentionally modifies the existing WooCommerce/theme interface rather than replacing complete WooCommerce templates.
 
-This keeps the customization relatively focused while preserving the store's existing product data, WooCommerce functionality, and theme structure.
+This keeps the customizations focused while preserving the store's existing product data, WooCommerce functionality, and theme structure.
 
 Before changing or removing theme classes used by these files, check the affected selectors and archive/product layouts.
 
 ---
 
-## Project
+# Project
 
 Developed for **ELVA KALA**, an online store for heating, cooling, plumbing and building equipment.
 
@@ -257,10 +337,11 @@ Developed for **ELVA KALA**, an online store for heating, cooling, plumbing and 
 
 ---
 
-## Version Overview
+# Version Overview
 
 | Component | Version |
 | --- | --- |
+| Mobile Product Cards | 1.0 |
 | Product Filter Drawer | 4.0 |
 | Shop Archive Fix | 2.0 |
 | Single Product Styling | 2.0 |

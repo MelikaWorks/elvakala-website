@@ -1,0 +1,14 @@
+/* ELVA — Fix mobile product price width */
+.item .item-area.general_mobile .product-detail-area .price {
+    max-width: none !important;
+}
+
+/* صفحه اصلی - کارت‌های محصول */
+/* Homepage - Product Cards */
+.item .item-area.general_mobile .actions .price {
+    max-width: none !important;
+    overflow: visible !important;
+    white-space: nowrap !important;
+}
+
+

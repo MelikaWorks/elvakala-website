@@ -1,0 +1,173 @@
+/**
+ * Elvakala – Shop Archive Fix
+ *
+ * Version: 2.0
+ *
+ * Custom styling fixes for WooCommerce product category archives.
+ *
+ * Includes:
+ * - Category descriptions
+ * - "More Information" button
+ * - Breadcrumbs
+ * - Category titles
+ * - Shop filter and sorting bar
+ * - Product result count
+ * - Product card action icons
+ * - Wishlist hover state
+ */
+
+/* =====================================
+   توضیحات دسته‌بندی / Category description
+===================================== */
+
+.tax-product_cat .term-description-wrap {
+    height: auto !important;
+    min-height: 0 !important;
+    margin-bottom: 10px !important;
+    padding: 18px 24px !important;
+}
+
+.tax-product_cat .term-description {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    overflow: visible !important;
+}
+
+
+/* =====================================
+   دکمه اطلاعات بیشتر / More information button
+===================================== */
+
+.tax-product_cat .term-description-wrap .loadmore {
+    position: static !important;
+    display: table;
+    margin: 14px auto 0 !important;
+}
+
+
+/* =====================================
+   بردکرامب دسته‌بندی /  Category breadcrumb
+===================================== */
+
+.tax-product_cat .woocommerce-breadcrumb {
+    color: #6B8CA3 !important;
+    font-size: 14px !important;
+    line-height: 1.8 !important;
+}
+
+.tax-product_cat .woocommerce-breadcrumb a {
+    color: #034A73 !important;
+    text-decoration: none !important;
+}
+
+.tax-product_cat .woocommerce-breadcrumb a:hover {
+    color: #4E7D9A !important;
+}
+
+
+/* =====================================
+   عنوان دسته‌بندی  / Category title
+===================================== */
+
+.tax-product_cat .page-title,
+.tax-product_cat .archive-title,
+.tax-product_cat .term-title {
+    color: #023A5A !important;
+    font-size: 19px !important;
+    font-weight: 600 !important;
+    line-height: 1.7 !important;
+}
+
+
+/* =====================================
+   نوار فیلتر و مرتب‌سازی  /  Filter and sorting bar
+===================================== */
+
+.tax-product_cat .shop-control-bar {
+    min-height: auto !important;
+    margin-top: 0 !important;
+    margin-bottom: 14px !important;
+    padding-top: 14px !important;
+    padding-bottom: 14px !important;
+    color: #023A5A !important;
+    font-size: 14px !important;
+}
+
+/* متن کالاهای موجود و مرتب‌سازی */
+/* Available products and sorting text */
+
+.tax-product_cat .shop-control-bar label,
+.tax-product_cat .shop-control-bar select,
+.tax-product_cat .shop-control-bar .woocommerce-ordering {
+    color: #023A5A !important;
+    font-size: 14px !important;
+}
+
+/* انتخاب‌گر مرتب‌سازی */
+/* Sorting selector */
+
+.tax-product_cat .shop-control-bar select {
+    font-family: inherit !important;
+}
+
+/* آیکن‌های نوار مرتب‌سازی، بدون تغییر دکمه فیلتر */
+/* Sorting bar icons, excluding the filter button */
+
+.tax-product_cat .shop-control-bar .woocommerce-ordering i,
+.tax-product_cat .shop-control-bar .woocommerce-ordering svg {
+    color: #023A5A !important;
+    stroke: currentColor !important;
+}
+
+
+/* =====================================
+   تعداد نتایج محصولات  /  Product result count
+===================================== */
+
+.tax-product_cat .woocommerce-result-count {
+    margin: 0 !important;
+    color: #6B8CA3 !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    line-height: 1.7 !important;
+}
+
+
+/* =====================================
+   آیکن‌های کارت محصول  /   Product card icons
+===================================== */
+
+.tax-product_cat ul.products li.product .product-actions a,
+.tax-product_cat ul.products li.product .compare,
+.tax-product_cat ul.products li.product .yith-wcwl-add-to-wishlist a {
+    color: #034A73 !important;
+}
+
+.tax-product_cat ul.products li.product .product-actions a:hover,
+.tax-product_cat ul.products li.product .compare:hover,
+.tax-product_cat ul.products li.product .yith-wcwl-add-to-wishlist a:hover {
+    color: #4E7D9A !important;
+}
+.block-title .title svg  {
+	 width: 29px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 15px;
+    fill: none;
+    stroke: #034A73;
+    transition: all .3s;
+}
+
+/*==================*/
+/* هاور قلب */
+/* Wishlist hover state */
+
+.add_to_wishlist:hover svg,
+.add_to_wishlist:hover .pack-theme {
+    stroke: #E53935 !important;
+    fill: #E53935 !important;
+    color: #E53935 !important;
+    transition: .2s ease;
+}

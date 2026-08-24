@@ -1,21 +1,13 @@
-<?php
 /**
  * Elvakala – Product Archive Filter Drawer
-  * Version: 4.0
  *
  * محل اجرا:
  * WooCommerce Shop / Product Category / Product Taxonomy Archives
  */
-/**
- * Elvakala – Product Archive Filter Drawer
-  * Version: 4.0
- *
- * Runs on:
- * WooCommerce Shop / Product Category / Product Taxonomy Archives
- */
+
 
 /* =========================================================
- * تشخیص صفحات آرشیو محصولات/Detect product archive pages
+ * تشخیص صفحات آرشیو محصولات
  * ======================================================= */
 
 function elva_is_product_archive_page() {
@@ -29,9 +21,8 @@ function elva_is_product_archive_page() {
 
 
 /* =========================================================
- * دریافت دسته‌بندی‌های مناسب برای صفحه فعلی/Get the appropriate categories for the current page
+ * دریافت دسته‌بندی‌های مناسب برای صفحه فعلی
  * ======================================================= */
-
 function elva_get_drawer_categories() {
 
     if (!taxonomy_exists('product_cat')) {
@@ -45,23 +36,19 @@ function elva_get_drawer_categories() {
     $parent_category = null;
     $parent_id       = 0;
 
-    /*
-     * صفحه یکی از دسته‌بندی‌های محصول/Current page is a product category archive
-     */
- 
+
+    /* =========================================================
+     * 1. صفحه دسته‌بندی محصول
+     * ======================================================= */
+
     if (
         $current_term instanceof WP_Term &&
         $current_term->taxonomy === 'product_cat'
     ) {
 
         /*
-         * ابتدا زیردسته‌های خود دسته فعلی را می‌گیریم.
-         * hide_empty روی false است تا همه زیردسته‌ها نمایش داده شوند.
+         * ابتدا زیردسته‌های خود دسته فعلی
          */
-        /*
-        * First, get the child categories of the current category.
-        * hide_empty is set to false to display all child categories.
-        */
         $categories = get_terms(array(
             'taxonomy'   => 'product_cat',
             'parent'     => (int) $current_term->term_id,
@@ -71,13 +58,8 @@ function elva_get_drawer_categories() {
         ));
 
         /*
-         * اگر دسته فعلی زیردسته داشته باشد:
-         * خود دسته فعلی، دسته مادر لیست محسوب می‌شود.
+         * اگر دسته فعلی زیردسته دارد
          */
-        /*
-        * If the current category has child categories,
-        * the current category is treated as the parent of the list.
-        */
         if (
             !is_wp_error($categories) &&
             !empty($categories)
@@ -90,17 +72,15 @@ function elva_get_drawer_categories() {
             );
         }
 
+
         /*
-         * اگر دسته فعلی زیردسته نداشته باشد:
-         * دسته مادر و دسته‌های هم‌سطح نمایش داده شوند.
+         * اگر زیردسته ندارد:
+         * مادر + دسته‌های هم‌سطح
          */
-        /*
-         * If the current category has no child categories,
-        * display its parent category and sibling categories.
-        */
         $parent_id = (int) $current_term->parent;
 
         if ($parent_id > 0) {
+
             $parent_category = get_term(
                 $parent_id,
                 'product_cat'
@@ -127,14 +107,177 @@ function elva_get_drawer_categories() {
         );
     }
 
-    /*
-     * صفحه اصلی فروشگاه یا سایر آرشیوهای محصولات:
-     * دسته‌های اصلی نمایش داده شوند.
-     */
-     /*
-    * On the main shop page or other product archives,
-    * display the top-level categories.
-    */
+
+    /* =========================================================
+     * 2. سایر Taxonomyهای محصولات
+     * مثال: Brand Archive
+     *
+     * فقط دسته‌هایی نمایش داده شوند که واقعاً محصولی
+     * از Taxonomy/Term فعلی داخل آنها وجود دارد.
+     * ======================================================= */
+
+    if (
+        $current_term instanceof WP_Term &&
+        $current_term->taxonomy !== 'product_cat'
+    ) {
+
+        /*
+         * محصولات متعلق به Term فعلی
+         */
+        $product_ids = get_posts(array(
+            'post_type'      => 'product',
+            'post_status'    => 'publish',
+            'posts_per_page' => -1,
+            'fields'         => 'ids',
+
+            'tax_query'      => array(
+                array(
+                    'taxonomy' => $current_term->taxonomy,
+                    'field'    => 'term_id',
+                    'terms'    => (int) $current_term->term_id,
+                ),
+            ),
+        ));
+
+        if (empty($product_ids)) {
+            return array(
+                'parent_category' => null,
+                'categories'      => array(),
+            );
+        }
+
+
+        /*
+         * تمام دسته‌های مربوط به محصولات این برند/Taxonomy
+         */
+        $product_categories = wp_get_object_terms(
+            $product_ids,
+            'product_cat'
+        );
+
+        if (
+            is_wp_error($product_categories) ||
+            empty($product_categories)
+        ) {
+            return array(
+                'parent_category' => null,
+                'categories'      => array(),
+            );
+        }
+
+
+        /*
+         * دسته‌ها را به دسته اصلی (Root Category) تبدیل می‌کنیم.
+         *
+         * مثلاً:
+         * سینک ظرفشویی
+         *      ↓
+         * لوازم آشپزخانه
+         *
+         * در نتیجه داخل Brand فقط دسته‌های اصلی مرتبط دیده می‌شوند.
+         */
+       /*
+ * فقط دقیق‌ترین دسته‌های مرتبط با محصولات این برند
+ * نمایش داده شوند.
+ *
+ * اگر هم "لوازم آشپزخانه" و هم "سینک" وجود داشته باشد،
+ * دسته مادر حذف می‌شود و فقط "سینک" باقی می‌ماند.
+ */
+
+$category_ids = array();
+
+foreach ($product_categories as $category) {
+
+    if (!($category instanceof WP_Term)) {
+        continue;
+    }
+
+    $category_ids[(int) $category->term_id] = (int) $category->term_id;
+}
+
+
+/*
+ * دسته‌هایی که مادرِ یکی دیگر از دسته‌های موجود هستند
+ * حذف شوند تا فقط دقیق‌ترین دسته‌ها بمانند.
+ */
+$final_category_ids = $category_ids;
+
+foreach ($category_ids as $category_id) {
+
+    $ancestors = get_ancestors(
+        $category_id,
+        'product_cat',
+        'taxonomy'
+    );
+
+    foreach ($ancestors as $ancestor_id) {
+
+        $ancestor_id = (int) $ancestor_id;
+
+        if (isset($final_category_ids[$ancestor_id])) {
+            unset($final_category_ids[$ancestor_id]);
+        }
+    }
+}
+
+		/*
+ * حذف دسته‌های تبلیغاتی/کمپینی از فیلتر Brand
+ */
+foreach ($final_category_ids as $category_id) {
+
+    $term = get_term($category_id, 'product_cat');
+
+    if (
+        $term instanceof WP_Term &&
+        in_array(
+            $term->name,
+            array(
+                'حراجی',
+                'پیشنهادات شگفت انگیز',
+                'پیشنهادات شگفت‌انگیز'
+            ),
+            true
+        )
+    ) {
+        unset($final_category_ids[$category_id]);
+    }
+}
+
+if (empty($final_category_ids)) {
+    return array(
+        'parent_category' => null,
+        'categories'      => array(),
+    );
+}
+
+
+/*
+ * اطلاعات دسته‌های دقیق مرتبط با برند
+ */
+$categories = get_terms(array(
+    'taxonomy'   => 'product_cat',
+    'include'    => array_values($final_category_ids),
+    'hide_empty' => false,
+    'orderby'    => 'menu_order',
+    'order'      => 'ASC',
+));
+
+return array(
+    'parent_category' => null,
+    'categories'      => is_wp_error($categories)
+        ? array()
+        : $categories,
+);
+}
+
+
+
+
+
+    /* =========================================================
+     * 3. صفحه اصلی Shop
+     * ======================================================= */
+
     $categories = get_terms(array(
         'taxonomy'   => 'product_cat',
         'parent'     => 0,
@@ -153,7 +296,7 @@ function elva_get_drawer_categories() {
 
 
 /* =========================================================
- * نمایش دسته‌بندی‌ها داخل پنل/Display categories inside the filter drawer
+ * نمایش دسته‌بندی‌ها داخل پنل
  * ======================================================= */
 
 function elva_render_drawer_categories() {
@@ -225,7 +368,32 @@ function elva_render_drawer_categories() {
                 <?php foreach ($categories as $category) : ?>
 
                     <?php
-                    $category_link = get_term_link($category);
+                  $current_archive_term = get_queried_object();
+
+if (
+    $current_archive_term instanceof WP_Term &&
+    $current_archive_term->taxonomy !== 'product_cat'
+) {
+
+    $current_archive_link = get_term_link($current_archive_term);
+
+    if (!is_wp_error($current_archive_link)) {
+
+        $category_link = add_query_arg(
+            'product_cat',
+            $category->slug,
+            $current_archive_link
+        );
+
+    } else {
+
+        $category_link = get_term_link($category);
+    }
+
+} else {
+
+    $category_link = get_term_link($category);
+}
 
                     if (is_wp_error($category_link)) {
                         continue;
@@ -262,7 +430,7 @@ function elva_render_drawer_categories() {
 
 
 /* =========================================================
- * دکمه فیلتر بالای محصولات / Product filter button above the product list
+ * دکمه فیلتر بالای محصولات
  * ======================================================= */
 
 add_action('woocommerce_before_shop_loop', function () {
@@ -295,7 +463,7 @@ add_action('woocommerce_before_shop_loop', function () {
 
 
 /* =========================================================
- * ساخت پنل کشویی/Build the filter drawer
+ * ساخت پنل کشویی
  * ======================================================= */
 
 add_action('wp_footer', function () {
@@ -354,9 +522,8 @@ add_action('wp_footer', function () {
 
 
                 /*
-                 * فیلترهای فعال/  Active filters
+                 * فیلترهای فعال
                  */
-             
                 if (class_exists('WC_Widget_Layered_Nav_Filters')) {
                     the_widget(
                         'WC_Widget_Layered_Nav_Filters',
@@ -369,7 +536,7 @@ add_action('wp_footer', function () {
 
 
                 /*
-                 * فیلتر قیمت /Price filter
+                 * فیلتر قیمت
                  */
                 if (class_exists('WC_Widget_Price_Filter')) {
                     the_widget(
@@ -383,9 +550,8 @@ add_action('wp_footer', function () {
 
 
                 /*
-                 * ساخت خودکار فیلتر برای ویژگی‌های ووکامرس  /Automatically generate filters for WooCommerce attributes
+                 * ساخت خودکار فیلتر برای ویژگی‌های ووکامرس
                  */
-             
                 if (
                     class_exists('WC_Widget_Layered_Nav') &&
                     function_exists('wc_get_attribute_taxonomies')
@@ -406,10 +572,6 @@ add_action('wp_footer', function () {
                          * ویژگی‌هایی که هیچ مقدار ثبت‌شده‌ای ندارند
                          * داخل پنل ساخته نمی‌شوند.
                          */
-                        /*
-                        * Attributes with no registered values
-                        * are not displayed in the filter drawer.
-                        */
                         $attribute_terms = get_terms(array(
                             'taxonomy'   => $taxonomy,
                             'hide_empty' => true,
@@ -464,7 +626,7 @@ add_action('wp_head', function () {
     <style id="elva-product-filter-style">
 
         /* =====================================
-           دکمه بازکردن فیلتر/Filter open button
+           دکمه بازکردن فیلتر
         ===================================== */
 
         .elva-filter-open {
@@ -517,7 +679,7 @@ add_action('wp_head', function () {
 
 
         /* =====================================
-           لایه تیره پشت پنل/ Dark overlay behind the filter drawer
+           لایه تیره پشت پنل
         ===================================== */
 
         .elva-filter-overlay {
@@ -541,7 +703,7 @@ add_action('wp_head', function () {
 
 
         /* =====================================
-           پنل کشویی/  Filter drawer
+           پنل کشویی
         ===================================== */
 
         .elva-filter-drawer {
@@ -577,7 +739,7 @@ add_action('wp_head', function () {
 
 
         /* =====================================
-           سربرگ پنل/Filter drawer header
+           سربرگ پنل
         ===================================== */
 
         .elva-filter-header {
@@ -630,7 +792,7 @@ add_action('wp_head', function () {
 
 
         /* =====================================
-           محتوای پنل/Filter drawer content
+           محتوای پنل
         ===================================== */
 
         .elva-filter-content {
@@ -686,7 +848,7 @@ add_action('wp_head', function () {
 
 
         /* =====================================
-           دسته‌بندی‌ها/ Category
+           دسته‌بندی‌ها
         ===================================== */
 
         .elva-drawer-categories {
@@ -801,7 +963,7 @@ add_action('wp_head', function () {
 
 
         /* =====================================
-           فیلترهای فعال / َActives Filters
+           فیلترهای فعال
         ===================================== */
 
         .elva-filter-content
@@ -813,12 +975,12 @@ add_action('wp_head', function () {
 
 
         /* =====================================
-           فیلتر قیمت / Price filter
+           فیلتر قیمت
         ===================================== */
 
-        /* =====================================
-        فیلتر قیمت  /Price filter
-        ===================================== */
+      /* =====================================
+   فیلتر قیمت
+===================================== */
 
 .elva-filter-content .price_slider_wrapper {
     width: 100%;
@@ -831,7 +993,6 @@ add_action('wp_head', function () {
 
 
 /* باکس کلی قیمت‌ها و دکمه */
-/* Overall price container and button */
 .elva-filter-content .price_slider_amount {
     display: flex !important;
     flex-wrap: wrap !important;
@@ -842,7 +1003,6 @@ add_action('wp_head', function () {
 
 /*===========================*/
 /* ردیف نمایش بازه قیمت */
-/* Price range display row */
 .elva-filter-content .price_slider_amount .price_label {
     display: flex !important;
     align-items: center;
@@ -865,7 +1025,6 @@ add_action('wp_head', function () {
 }
 
 /* عددهای قیمت */
-/* Price values */
 .elva-filter-content .price_slider_amount .price_label .from,
 .elva-filter-content .price_slider_amount .price_label .to {
     display: inline !important;
@@ -885,7 +1044,6 @@ add_action('wp_head', function () {
 }
 
 /* متن خواناتر برای بازه */
-/* More readable price range text */
 .elva-filter-content .price_slider_amount .price_label::before {
     content: "از";
     color: #555;
@@ -907,7 +1065,6 @@ add_action('wp_head', function () {
 /*===========================*/		
 		
 /* دکمه صافی تمام‌عرض */
-/* Full-width filter button */
 .elva-filter-content .price_slider_amount button,
 .elva-filter-content .price_slider_amount .button {
     display: flex !important;
@@ -942,14 +1099,12 @@ add_action('wp_head', function () {
 
 
 /* حذف فضای خالی ووکامرس */
-/* Remove WooCommerce empty spacing */
 .elva-filter-content .price_slider_amount .clear {
     display: none !important;
 }
 
 
 /* رنگ نوار قیمت */
- /* Price slider color */
 .elva-filter-content .ui-slider .ui-slider-range {
     background: #034A73 !important;
 }
@@ -966,7 +1121,7 @@ add_action('wp_head', function () {
 
 
         /* =====================================
-           فیلتر ویژگی‌ها /  Attribute filters
+           فیلتر ویژگی‌ها
         ===================================== */
 
         .elva-filter-content
@@ -1028,7 +1183,7 @@ add_action('wp_head', function () {
 
 
         /* =====================================
-           اسکرول و قفل صفحه  /   Scrolling and page locking
+           اسکرول و قفل صفحه
         ===================================== */
 
         .elva-filter-content::-webkit-scrollbar {
@@ -1051,7 +1206,7 @@ add_action('wp_head', function () {
 
 
         /* =====================================
-           دسته‌بندی بالای آرشیو مخفی شود  /  Hide categories above the product archive
+           دسته‌بندی بالای آرشیو مخفی شود
         ===================================== */
 
         .bk_category_list.is_dynamic.is_top {
@@ -1060,7 +1215,7 @@ add_action('wp_head', function () {
 
 
         /* =====================================
-           موبایل  / Mobile
+           موبایل
         ===================================== */
 
         @media (max-width: 767px) {
@@ -1093,7 +1248,7 @@ add_action('wp_head', function () {
 
 
         /* =====================================
-           کاهش انیمیشن برای تنظیمات دسترسی  /   Reduce animations for accessibility preferences
+           کاهش انیمیشن برای تنظیمات دسترسی
         ===================================== */
 
         @media (prefers-reduced-motion: reduce) {
@@ -1290,10 +1445,6 @@ add_action('wp_footer', function () {
              * هنگام رفتن به صفحه دیگر با کلیک روی دسته‌بندی،
              * پنل بسته می‌شود تا ظاهر صفحه گیر نکند.
              */
-          /*
-          * When navigating to another page by clicking a category,
-          * close the drawer to prevent the page layout from getting stuck.
-          */
             drawer.addEventListener('click', function (event) {
 
                 const categoryLink = event.target.closest(
@@ -1311,4 +1462,3 @@ add_action('wp_footer', function () {
 
     <?php
 }, 100);
-  

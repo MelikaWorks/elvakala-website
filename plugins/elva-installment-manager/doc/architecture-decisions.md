@@ -208,6 +208,33 @@ Instead, ELVA can calculate business rules independently and synchronize
 generated installment plan data into the native DenaPay product metadata
 structure.
 
+---
+# Installment Rule Calculation Test
+
+After identifying the DenaPay product metadata structure, a calculation test was performed to verify that ELVA can generate installment values based on business rules.
+
+The test validates that the automation layer can:
+
+- Read product pricing data
+- Apply installment rules
+- Calculate prepayment amount
+- Calculate check amounts
+- Generate the required DenaPay installment structure
+
+Example output:
+
+```php
+Array
+(
+    [months] => 5
+    [checks] => 5
+    [prepayment] => calculated amount
+    [check_amount] => calculated amount
+    [type] => monthly
+)
+
+This confirmed that ELVA can prepare the required data before synchronizing it with DenaPay product metadata.
+
 ------------------------------------------------------------------------
 
 # Initial Approach --- Automation Bot

@@ -61,17 +61,17 @@ The runtime plan-selection logic had not yet been modified.
 
 The following screenshot shows an experimental 5-month installment plan restricted to a specific WooCommerce product category.
 
-![Category-specific 5-month installment plan](screenshots/mehranpay-01-category-specific-plan-hooks-5-months.png)
+![Category-specific 5-month installment plan](screenshots/01-category-specific-plan-hooks-5-months.png)
 
 ### Global Plan Example
 
 Existing global installment plans were preserved alongside category-specific plans.
 
-![Global installment plan settings](screenshots/mehranpay-02-global-installment-plan-settings.png)
+![Global installment plan settings](screenshots/02-global-installment-plan-settings.png)
 
 Another category could independently receive different installment terms, such as a 4-month plan with 4 checks.
 
-![Category-specific 4-month installment plan](screenshots/mehranpay-03-category-specific-plan-green-4-months.png)
+![Category-specific 4-month installment plan](screenshots/03-category-specific-plan-green-4-months.png)
 
 ---
 
@@ -253,7 +253,7 @@ The rule engine could determine which plans belonged to a product, and the bridg
 
 The prototype reached the point where multiple installment configurations could be displayed on the WooCommerce product page.
 
-![Multiple installment plans displayed on product page](screenshots/mehranpay-04-product-page-multiple-installment-plans.png)
+![Multiple installment plans displayed on product page](screenshots/04-product-page-multiple-installment-plans.png)
 
 However, applying those rules reliably still required DenaPay to expose hooks or receive patches at multiple internal execution points.
 

@@ -99,6 +99,24 @@ This screenshot represents a manually configured product-level installment plan 
 
 ---
 
+## Network Inspection
+
+During the investigation phase, browser network inspection was used to analyze DenaPay-related frontend resources loaded on WooCommerce product pages.
+
+The purpose of this inspection was to better understand:
+
+- Which DenaPay assets are loaded on product pages
+- How DenaPay integrates with the WooCommerce frontend
+- Additional behavior before designing the synchronization architecture
+
+Screenshot from the network inspection:
+
+![DenaPay Product Installment Network Inspection](../screenshots/denapay-product-installment-network-inspection.png)
+
+This screenshot represents the browser network analysis performed during the investigation phase.
+
+---
+
 # Initial Approach — Automation Bot
 
 The first solution idea was creating an automation layer that could:

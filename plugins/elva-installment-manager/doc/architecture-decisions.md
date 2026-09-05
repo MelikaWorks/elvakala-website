@@ -276,6 +276,29 @@ Screenshot from the calculation test:
 ![ELVA Installment Rule Calculation Test](../screenshots/elva-installment-rule-calculation-test.png)
 ------------------------------------------------------------------------
 
+# Single Product Update Verification
+
+After generating the DenaPay installment metadata structure, a single product update test was performed.
+
+The purpose of this test was to verify that:
+
+- The generated metadata format is accepted by DenaPay
+- Product-level installment configuration works correctly
+- DenaPay displays the generated installment plan the same way as a manually configured plan
+
+The test was performed on a single WooCommerce product.
+
+Screenshot from the frontend verification:
+
+![DenaPay Product Installment Frontend Verification](../screenshots/denapay-product-installment-frontend-result.png)
+
+The result confirmed that the generated installment data is compatible with DenaPay product-level installment handling.
+
+At this stage, the test only validates the single product update process.
+
+The next step is designing the rule-based automation layer to apply installment rules across multiple products.
+
+
 # Initial Approach --- Automation Bot
 
 Based on the investigation results, the first solution idea was creating

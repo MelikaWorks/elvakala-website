@@ -1,25 +1,28 @@
-# ELVA Installment Manager - Implementation
+# ELVA Installment Manager - Rule Management Implementation
 
 ## Overview
 
-This document describes the implementation of the ELVA Installment
-Manager module.
+This document describes the implementation of the **ELVA Installment
+Manager** module.
 
 The purpose of this module is to manage installment business rules based
 on WooCommerce product categories.
 
 At this stage, the module only manages installment rules. It does not
-synchronize data with DenaPay yet.
+synchronize data with DenaPay or update products yet.
 
 ------------------------------------------------------------------------
 
-## Admin Menu
+## Admin Panel
 
-A new WordPress admin menu has been created:
+A dedicated WordPress admin menu was added:
 
     ELVA Installment
 
-The page provides a management interface for installment rules.
+The admin panel provides a management interface for installment rules.
+
+![ELVA Installment Rules Admin
+Panel](elva-installment-rules-admin-panel.png)
 
 ------------------------------------------------------------------------
 
@@ -33,7 +36,10 @@ The admin panel supports:
 -   Setting number of checks
 -   Setting installment duration
 -   Editing existing rules
--   Deleting rules
+-   Deleting existing rules
+
+![Rule Management
+Interface](elva-installment-rule-management-interface.png)
 
 ------------------------------------------------------------------------
 
@@ -45,13 +51,13 @@ Each installment rule contains:
   ----------------------- --------------------------------
   Category                WooCommerce product category
   Prepayment Percentage   Initial payment percentage
-  Checks                  Number of checks
+  Checks                  Number of installment checks
   Duration                Installment duration in months
 
 Example:
 
     Category:
-    Stove Parnian Steel
+    Parnian Steel Stove
 
     Prepayment:
     20%
@@ -66,7 +72,7 @@ Example:
 
 ## Category Selection
 
-The rule manager uses real WooCommerce product categories.
+The module uses real WooCommerce product categories.
 
 Category hierarchy is supported.
 
@@ -86,31 +92,45 @@ Storage key:
 
     elva_denapay_rules
 
-The stored rules are prepared for future synchronization with DenaPay.
+The stored rules are prepared for the next synchronization phase.
 
 ------------------------------------------------------------------------
 
-## Tested Features
+# Testing
 
-### Create Rule
+## Create Rule
 
-A new installment rule was successfully created.
+A new installment rule was created successfully.
+
+Test data:
+
+    Category:
+    Parnian Steel Stove
+
+    Prepayment:
+    20%
+
+    Checks:
+    5
+
+    Duration:
+    5 months
 
 Screenshot:
 
-    rule-save-success.png
+![Rule Save Success](rule-save-success.png)
 
 ------------------------------------------------------------------------
 
-### Saved Rule Verification
+## Saved Rule Verification
 
 The created rule appears in the registered rules table.
 
 Screenshot:
 
-    rule-save-verification.png
+![Rule Save Verification](rule-save-verification.png)
 
-Example output:
+Expected result:
 
     Category: Parnian Steel Stove
     Prepayment: 20%
@@ -119,11 +139,9 @@ Example output:
 
 ------------------------------------------------------------------------
 
-### Edit Rule
+## Edit Rule
 
 Editing an existing rule was tested successfully.
-
-Test scenario:
 
 Before:
 
@@ -131,20 +149,23 @@ Before:
     Checks: 5
     Duration: 5
 
+Screenshot:
+
+![Before Edit](rule-before-edit.png)
+
 After:
 
     Prepayment: 30%
     Checks: 4
     Duration: 4
 
-Screenshots:
+Screenshot:
 
-    rule-before-edit.png
-    rule-after-edit.png
+![After Edit](rule-after-edit.png)
 
 ------------------------------------------------------------------------
 
-### Delete Rule
+## Delete Rule
 
 Deleting an installment rule was tested successfully.
 
@@ -154,10 +175,13 @@ Flow:
 2.  Confirm deletion
 3.  Rule removed from the list
 
-Screenshots:
+Confirmation:
 
-    rule-delete-confirmation.png
-    rule-delete-success.png
+![Delete Confirmation](rule-delete-confirmation.png)
+
+Result:
+
+![Delete Success](rule-delete-success.png)
 
 ------------------------------------------------------------------------
 
@@ -181,7 +205,7 @@ The following features are intentionally not included in this stage:
 -   DenaPay metadata update
 -   Product synchronization
 -   Automatic installment calculation on products
--   Bulk sync execution
+-   Bulk synchronization
 
 ------------------------------------------------------------------------
 

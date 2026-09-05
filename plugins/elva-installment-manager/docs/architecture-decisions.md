@@ -82,6 +82,21 @@ Manual configuration would be:
 - Difficult to maintain
 
 ---
+## Network Request Analysis
+
+After inspecting the frontend assets loaded by DenaPay, the next step was analyzing the network requests triggered on the product page.
+
+The goal was to identify whether DenaPay exposes a clear frontend request flow that could be used for automation or synchronization.
+
+During this investigation, browser Fetch/XHR requests were monitored while interacting with the product page.
+
+![DenaPay Network Request Analysis](../screenshots/denapay-network-inspection-fetch-analysis.png)
+
+The investigation showed that frontend network inspection alone was not sufficient to determine the complete product installment data structure.
+
+Because of this limitation, the next step was moving to a server-side metadata inspection approach using WordPress product metadata.
+
+---
 
 ## Network Inspection
 

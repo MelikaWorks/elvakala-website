@@ -232,9 +232,11 @@ Array
     [check_amount] => calculated amount
     [type] => monthly
 )
-
+```
 This confirmed that ELVA can prepare the required data before synchronizing it with DenaPay product metadata.
+Screenshot from the calculation test:
 
+![ELVA Installment Rule Calculation Test](../screenshots/elva-installment-rule-calculation-test.png)
 ------------------------------------------------------------------------
 
 # Initial Approach --- Automation Bot

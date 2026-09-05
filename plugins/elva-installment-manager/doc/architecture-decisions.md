@@ -115,13 +115,11 @@ provide enough information for automation.
 
 Screenshot:
 
-![DenaPay Product Installment Network
-Inspection](../screenshots/denapay-product-installment-network-inspection.png)
+![DenaPay Product Installment NetworkInspection](../screenshots/denapay-product-installment-network-inspection.png)
 
 Additional Fetch/XHR analysis:
 
-![DenaPay Network Request
-Analysis](../screenshots/denapay-network-inspection-fetch-analysis.png)
+![DenaPay Network RequestAnalysis](../screenshots/denapay-network-inspection-fetch-analysis.png)
 
 The investigation showed that frontend network inspection alone was not
 sufficient to identify the complete product installment data structure.
@@ -164,8 +162,7 @@ configuration directly on the WooCommerce product.
 
 Screenshot:
 
-![DenaPay Product Meta Inspector Result
-01](../screenshots/denapay-product-meta-inspector-result-01.png)
+![DenaPay Product Meta Inspector Result01](../screenshots/denapay-product-meta-inspector-result-01.png)
 
 ------------------------------------------------------------------------
 
@@ -176,8 +173,7 @@ stored by DenaPay.
 
 Screenshot:
 
-![DenaPay Product Meta Inspector Result
-02](../screenshots/denapay-product-meta-inspector-result-02.png)
+![DenaPay Product Meta Inspector Result02](../screenshots/denapay-product-meta-inspector-result-02.png)
 
 Example:
 
@@ -207,6 +203,47 @@ calculation logic.
 Instead, ELVA can calculate business rules independently and synchronize
 generated installment plan data into the native DenaPay product metadata
 structure.
+
+---
+# DenaPay Metadata Synchronization Test
+
+After discovering the DenaPay product metadata structure, a synchronization test was performed.
+
+The purpose of this test was to verify that ELVA can:
+
+- Generate installment plan data using business rules
+- Store the generated data in the native DenaPay product metadata format
+- Keep compatibility with DenaPay product-level installment handling
+
+The generated installment data was synchronized into the WooCommerce product metadata:
+
+_denaPay_installment_enabled
+
+and:
+
+Test result:
+
+```php
+Array
+(
+    [0] => Array
+        (
+            [months] => 5
+            [checks] => 5
+            [prepayment] => 7675400
+            [check_amount] => 6140320
+            [type] => monthly
+        )
+)
+
+```
+Screenshot from the synchronization test:
+
+The successful result confirmed that ELVA can generate and synchronize installment plan data using the same structure expected by DenaPay.
+
+This validated the foundation for implementing automated rule-based synchronization across multiple products.
+
+![denapay-metadata-sync-test-success.png](../screenshots/denapay-metadata-sync-test-success.png)
 
 ---
 # Installment Rule Calculation Test

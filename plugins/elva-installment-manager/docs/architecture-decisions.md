@@ -93,7 +93,7 @@ A sample product was manually configured with DenaPay installment settings in or
 
 Screenshot from the investigation:
 
-![DenaPay Product Custom Installment Plan](/screenshots/denapay-product-installment-network-inspection.png)
+![DenaPay Product Custom Installment Plan](../screenshots/denapay-product-installment-network-inspection.png)
 
 This screenshot represents a manually configured product-level installment plan used during the investigation phase.
 
@@ -111,7 +111,7 @@ The purpose of this inspection was to better understand:
 
 Screenshot from the network inspection:
 
-![DenaPay Product Installment Network Inspection](screenshots/denapay-product-installment-network-inspection.png)
+![DenaPay Product Installment Network Inspection](../screenshots/denapay-product-installment-network-inspection.png)
 
 This screenshot represents the browser network analysis performed during the investigation phase.
 

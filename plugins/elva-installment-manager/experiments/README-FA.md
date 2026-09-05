@@ -247,17 +247,23 @@ MehranPay مستقل شده بود، اما اجرای واقعی قوانین �
 فایل‌های مربوط به MehranPay با Prefix زیر مشخص شده‌اند:
 
 `mehranpay-`
-
 نمونه‌ها:
 
 - `01-category-specific-plan-hooks-5-months.png`
-- ![Category-specific 5-month installment plan](screenshots/01-category-specific-plan-hooks-5-months.png)
+
+![Category-specific 5-month installment plan](screenshots/01-category-specific-plan-hooks-5-months.png)
+
 - `02-global-installment-plan-settings.png`
-- ![Category-specific 5-month installment plan](screenshots/02-global-installment-plan-settings.png)
-- `mehranpay-03-category-specific-plan-green-4-months.png`
-- ![Category-specific 5-month installment plan](screenshots/03-category-specific-plan-green-4-months.png)
-- `mehranpay-04-product-page-multiple-installment-plans.png`
-- ![Category-specific 5-month installment plan](screenshots/04-product-page-multiple-installment-plans.png)
+
+![Global installment plan settings](screenshots/02-global-installment-plan-settings.png)
+
+- `03-category-specific-plan-green-4-months.png`
+
+![Category-specific 4-month installment plan](screenshots/03-category-specific-plan-green-4-months.png)
+
+- `04-product-page-multiple-installment-plans.png`
+
+![Multiple installment plans displayed on product page](screenshots/04-product-page-multiple-installment-plans.png)
 
 این تصاویر نشان می‌دهند که ایده Category-Based Plans از نظر UI و نمایش پلن‌ها عملی شد، اما معماری Runtime هنوز وابستگی زیادی به DenaPay داشت.
 

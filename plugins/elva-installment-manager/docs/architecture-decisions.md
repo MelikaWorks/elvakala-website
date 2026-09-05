@@ -24,12 +24,10 @@ Product A:
 - 30% initial payment
 - 5 checks
 
-
 Product B:
 
 - 20% initial payment
 - 4 checks
-
 
 This capability provides the flexibility required by ELVAKALA business rules.
 
@@ -82,37 +80,82 @@ Manual configuration would be:
 - Difficult to maintain
 
 ---
-## Network Request Analysis
 
-After inspecting the frontend assets loaded by DenaPay, the next step was analyzing the network requests triggered on the product page.
+## Network Investigation
 
-The goal was to identify whether DenaPay exposes a clear frontend request flow that could be used for automation or synchronization.
+After identifying the need for automation, the next step was investigating how DenaPay works internally.
 
-During this investigation, browser Fetch/XHR requests were monitored while interacting with the product page.
+Browser developer tools were used to inspect DenaPay-related frontend behavior on WooCommerce product pages.
+
+The purpose of this investigation was to understand:
+
+- Which DenaPay assets are loaded
+- How DenaPay integrates with WooCommerce frontend pages
+- Whether frontend requests could provide enough information for automation
+
+During the investigation, Fetch/XHR requests and loaded resources were monitored.
+
+Screenshot from the network investigation:
 
 ![DenaPay Network Request Analysis](../screenshots/denapay-network-inspection-fetch-analysis.png)
 
 The investigation showed that frontend network inspection alone was not sufficient to determine the complete product installment data structure.
 
-Because of this limitation, the next step was moving to a server-side metadata inspection approach using WordPress product metadata.
+Because of this limitation, the investigation moved to server-side product metadata inspection.
 
 ---
 
-## Network Inspection
+## Product Meta Structure Investigation
 
-During the investigation phase, browser network inspection was used to analyze DenaPay-related frontend resources loaded on WooCommerce product pages.
+After analyzing the frontend behavior of DenaPay, a read-only diagnostic tool was created to inspect the actual product metadata stored by DenaPay.
 
-The purpose of this inspection was to better understand:
+Tool:
 
-- Which DenaPay assets are loaded on product pages
-- How DenaPay integrates with the WooCommerce frontend
-- Additional behavior before designing the synchronization architecture
+```
+tools/denapay-product-meta-inspector.php
+```
 
-Screenshot from the network inspection:
+The purpose of this tool was to discover how DenaPay stores product-level installment configuration and identify the data structure required for future synchronization.
 
-![DenaPay Product Installment Network Inspection](../screenshots/denapay-product-installment-network-inspection.png)
+The inspector reads the following WooCommerce product metadata:
 
-This screenshot represents the browser network analysis performed during the investigation phase.
+```
+_denaPay_installment_enabled
+```
+
+and:
+
+```
+_denaPay_installment_plans
+```
+
+The investigation showed that DenaPay stores product-specific installment plans directly inside WooCommerce product metadata.
+
+Example discovered structure:
+
+```php
+Array
+(
+    [0] => Array
+        (
+            [months] => 5
+            [checks] => 5
+            [prepayment] => calculated amount
+            [check_amount] => calculated amount
+            [type] => monthly
+        )
+)
+```
+
+The actual values of `prepayment` and `check_amount` depend on the product price and installment business rules.
+
+Screenshot from the metadata investigation:
+
+![DenaPay Product Meta Inspector Result](../screenshots/denapay-product-meta-inspector-result-01.png)
+
+This investigation confirmed that ELVA does not need to modify DenaPay frontend calculation logic.
+
+Instead, ELVA can calculate business rules independently and synchronize the generated installment plan data into the native DenaPay product metadata structure.
 
 ---
 
@@ -167,58 +210,7 @@ Apply:
 20% prepayment
 4 checks
 ```
----
-## Product Meta Structure Investigation
 
-After analyzing the frontend behavior of DenaPay, a read-only diagnostic tool was created to inspect the actual product metadata stored by DenaPay.
-
-Tool:
-
-```
-tools/denapay-product-meta-inspector.php
-```
-
-The purpose of this tool was to discover how DenaPay stores product-level installment configuration and identify the data structure required for future synchronization.
-
-The inspector reads the following WooCommerce product metadata:
-
-```
-_denaPay_installment_enabled
-```
-
-and:
-
-```
-_denaPay_installment_plans
-```
-
-The investigation showed that DenaPay stores product-specific installment plans directly inside WooCommerce product metadata.
-
-Example discovered structure:
-
-```php
-Array
-(
-    [0] => Array
-        (
-            [months] => 5
-            [checks] => 5
-            [prepayment] => 33000000
-            [check_amount] => 26400000
-            [type] => monthly
-        )
-)
-```
-
-This discovery confirmed that ELVA does not need to modify DenaPay frontend calculation logic.
-
-Instead, ELVA can calculate business rules independently and synchronize the generated installment plan data into the native DenaPay product metadata structure.
-
-Screenshot from the investigation:
-
-![DenaPay Product Meta Inspector Result](../screenshots/denapay-product-meta-inspector-result.png)
-
-This investigation became the foundation for designing the DenaPay synchronization layer.
 ---
 
 # Why This Approach Was Important
@@ -258,7 +250,7 @@ A permanent synchronization mechanism was required.
 
 # Architectural Evolution
 
-During further experiments, it became clear that directly filtering DenaPay global plans at runtime introduced complexity.
+During further investigation, it became clear that directly filtering DenaPay global plans at runtime introduced complexity.
 
 DenaPay processes installment plans through multiple execution paths, meaning a single runtime filter was not enough to guarantee consistent behavior across:
 

@@ -118,7 +118,7 @@ Test data:
 
 Screenshot:
 
-![Rule Save Success](../screenshots/rule-save-success.png)
+![Rule Save Success](../screenshots/rule-save-success.png.png)
 
 ------------------------------------------------------------------------
 

@@ -83,21 +83,17 @@ Manual configuration would be:
 
 # Manual Product Configuration Investigation
 
-To understand how DenaPay handles product-level installment plans, a sample WooCommerce product was manually configured.
+As the first step of the investigation, a WooCommerce product was manually configured with DenaPay installment settings.
 
-The purpose of this step was to verify:
+The purpose of this test was to confirm:
 
-- Whether DenaPay supports product-specific installment rules
-- How installment plans appear on individual products
-- What information would need to be automated later
+- Whether DenaPay supports product-level installment configuration
+- How installment plans are defined for an individual product
+- What data would need to be generated automatically in the future
 
-Screenshot:
+The test confirmed that DenaPay supports custom installment plans at product level.
 
-![DenaPay Product Custom Installment Configuration](../screenshots/denapay-product-custom-installment-configuration.png)
-
-The result confirmed that DenaPay allows installment configuration directly on individual products.
-
-However, manually applying this configuration to hundreds of products is not practical.
+However, this approach requires manual configuration for each product, which is not scalable for a large catalog.
 
 ---
 

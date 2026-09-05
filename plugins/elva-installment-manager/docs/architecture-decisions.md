@@ -83,22 +83,6 @@ Manual configuration would be:
 
 ---
 
-## Investigation
-
-A sample product was manually configured with DenaPay installment settings in order to investigate:
-
-- How DenaPay stores product-specific installment data
-- How product-level plans are represented
-- Whether ELVA could automate this process
-
-Screenshot from the investigation:
-
-![DenaPay Product Custom Installment Plan](../screenshots/denapay-product-installment-network-inspection.png)
-
-This screenshot represents a manually configured product-level installment plan used during the investigation phase.
-
----
-
 ## Network Inspection
 
 During the investigation phase, browser network inspection was used to analyze DenaPay-related frontend resources loaded on WooCommerce product pages.

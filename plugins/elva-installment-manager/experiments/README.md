@@ -314,6 +314,83 @@ This approach was ultimately not included in the main implementation and is pres
 
 ---
 
+# Investigating DenaPay Product-Specific Plans
+
+After encountering the limitations of runtime filtering and direct modifications to DenaPay's internal execution paths, the next step was to investigate how DenaPay stores installment plans assigned directly to individual products.
+
+The purpose of this investigation was to determine whether ELVA could use DenaPay's native product-level installment structure instead of modifying DenaPay's internal plan-selection logic.
+
+For this purpose, a read-only diagnostic tool was created:
+
+- `denapay-product-meta-inspector.php`
+
+The tool runs on the WooCommerce product edit screen and displays DenaPay-related product metadata without modifying any product data.
+
+The two primary meta keys investigated were:
+
+`_denapay_installment_enabled`
+
+and:
+
+`_denapay_installment_plans`
+
+The first indicates whether installment purchasing is enabled for the product, while the second stores the product-specific installment plans associated with that product.
+
+The Inspector only uses `get_post_meta()` to read this information and performs no write, update, or delete operations on product data.
+
+## Purpose of the Inspector
+
+The Inspector was not intended to become a feature of the final ELVA plugin.
+
+It was created specifically as an investigation and debugging tool to answer several architectural questions:
+
+- Where does DenaPay store product-specific installment plans?
+- What data structure is used for these plans?
+- How is installment availability enabled for an individual product?
+- Can a plan calculated by ELVA be written directly into DenaPay's native product structure?
+
+The investigation confirmed that DenaPay supports Product-Specific Installment Plans and stores their configuration in product metadata.
+
+This discovery became one of the key turning points in the project's architecture.
+
+Instead of attempting to filter global plans dynamically during Product, Cart, and Checkout execution, ELVA could calculate its own business rules and synchronize the resulting plan into DenaPay's native product-specific plan structure.
+
+## Product Used During the Investigation
+
+The behavior was investigated using an actual WooCommerce product with DenaPay installment functionality.
+
+The following screenshot shows the product used while investigating DenaPay's Product-Specific Plans and product metadata:
+
+![DenaPay product-specific plan investigation example](screenshots/denapay-product-meta-inspector-product-example.png)
+
+This screenshot is **not the output of the Inspector itself**. It shows the WooCommerce product whose DenaPay metadata was examined during the experiment.
+
+## Experiment Result
+
+This investigation directly influenced the architectural direction of the project:
+
+```text
+Runtime Global Plan Filtering
+        ↓
+Multiple DenaPay Internal Paths
+        ↓
+Maintenance & Compatibility Problems
+        ↓
+Product Meta Investigation
+        ↓
+DenaPay Product-Specific Plans Discovered
+        ↓
+ELVA Rule Calculation
+        ↓
+Synchronization to Native DenaPay Product Meta
+```
+
+For this reason, `denapay-product-meta-inspector.php` is preserved in the `experiments` directory as an investigation and debugging utility.
+
+It is **not part of the production implementation** of ELVA Installment Manager.
+
+---
+
 # Final Architectural Decision
 
 Further inspection of DenaPay revealed an important capability:

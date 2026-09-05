@@ -298,6 +298,71 @@ At this stage, the test only validates the single product update process.
 
 The next step is designing the rule-based automation layer to apply installment rules across multiple products.
 
+---
+# Category Rule Dry Run Test
+
+After validating the single product update process, a category-based dry run test was performed.
+
+The purpose of this test was to verify that ELVA can:
+
+- Find multiple products based on WooCommerce categories
+- Apply installment rules to a group of products
+- Calculate product-specific installment values based on each product price
+- Generate installment data without modifying DenaPay metadata
+
+Test rule:
+``` text
+Category:
+stove-parnian
+
+Rule:
+20% prepayment
+5 checks
+5 months
+```
+
+The dry run process:
+
+``` text
+WooCommerce Category
+|
+v
+Find Matching Products
+|
+v
+Read Product Prices
+|
+v
+Calculate Installment Values
+|
+v
+Generate DenaPay Installment Data
+```
+
+Example output:
+
+``` text
+Product ID: 28336
+Name: پرنیان استیل اجاق گاز 5 شعله 5226
+Price: 38,377,000
+Prepayment 20%: 7,675,400
+Checks: 5
+Each Check: 6,140,320
+Months: 5
+```
+
+Screenshot from the dry run test:
+
+![ELVA DenaPay Category Dry Run Result](../screenshots/elva-denapay-category-dry-run-result.png)
+
+The result confirmed that ELVA can identify multiple products from a category and calculate individual installment values based on product prices.
+
+At this stage, the test only performs calculation and reporting.
+
+No DenaPay product metadata was modified during this test.
+
+The next step is implementing the automation layer that applies these calculated values to multiple products.
+---
 
 # Initial Approach --- Automation Bot
 
@@ -323,6 +388,8 @@ Calculate Installment Values
         v
 Update DenaPay Product Data
 ```
+The dry run process:
+
 
 ------------------------------------------------------------------------
 

@@ -277,6 +277,81 @@ MehranPay مستقل شده بود، اما اجرای واقعی قوانین �
 
 ---
 
+# بررسی ساختار Product-Specific Plans در DenaPay
+
+بعد از مشکلاتی که در روش Runtime Filtering و تغییر مسیرهای داخلی DenaPay مشاهده شد، مرحله بعدی بررسی نحوه ذخیره پلن‌های اختصاصی هر محصول در خود DenaPay بود.
+
+هدف این بررسی این بود که مشخص شود آیا می‌توان به‌جای تغییر منطق داخلی انتخاب پلن‌های DenaPay، از ساختار Native خود افزونه برای تعریف شرایط اقساط در سطح محصول استفاده کرد.
+
+برای این منظور یک ابزار تشخیصی Read-Only ساخته شد:
+
+- `denapay-product-meta-inspector.php`
+
+این ابزار در صفحه ویرایش محصولات WooCommerce اجرا می‌شد و بدون ایجاد هیچ تغییری در اطلاعات محصول، متادیتای مربوط به DenaPay را نمایش می‌داد.
+
+دو Meta Key اصلی که بررسی شدند عبارت بودند از:
+
+`_denapay_installment_enabled`
+
+و:
+
+`_denapay_installment_plans`
+
+اولی مشخص می‌کند که قابلیت خرید اقساطی برای محصول فعال است یا خیر و دومی اطلاعات پلن‌های اقساط اختصاصی همان محصول را نگه‌داری می‌کند.
+
+ابزار Inspector فقط از `get_post_meta()` برای خواندن این اطلاعات استفاده می‌کرد و هیچ عملیات Write، Update یا Delete روی اطلاعات محصول انجام نمی‌داد.
+
+## هدف از ساخت Inspector
+
+هدف این ابزار ایجاد یک قابلیت جدید برای نسخه نهایی ELVA نبود.
+
+Inspector صرفاً برای بررسی رفتار و ساختار داده DenaPay ساخته شد تا بتوانیم پاسخ چند سؤال معماری را پیدا کنیم:
+
+- DenaPay پلن‌های اختصاصی محصول را در کجا ذخیره می‌کند؟
+- ساختار داده این پلن‌ها چگونه است؟
+- فعال بودن اقساط برای هر محصول چگونه مشخص می‌شود؟
+- آیا می‌توان پلن محاسبه‌شده توسط ELVA را مستقیماً در ساختار Native خود DenaPay ذخیره کرد؟
+
+این بررسی نشان داد که DenaPay از Product-Specific Installment Plans پشتیبانی می‌کند و اطلاعات آنها را در متادیتای خود محصول نگه می‌دارد.
+
+این کشف یکی از نقاط مهم تغییر معماری پروژه بود.
+
+به‌جای اینکه ELVA در زمان اجرای Product، Cart و Checkout تلاش کند پلن‌های Global را فیلتر کند، می‌توانست قوانین خودش را محاسبه کرده و نتیجه را به‌عنوان Product-Specific Plan در ساختار استاندارد DenaPay همگام‌سازی کند.
+
+## محصول مورد استفاده در بررسی
+
+برای بررسی رفتار واقعی DenaPay، این ساختار روی یک محصول واقعی WooCommerce آزمایش شد.
+
+تصویر زیر نمونه محصولی است که در مرحله بررسی Product-Specific Plans و متادیتای DenaPay مورد استفاده قرار گرفت:
+
+![DenaPay product-specific plan investigation example](screenshots/denapay-product-meta-inspector-product-example.png)
+
+این تصویر خروجی خود Inspector نیست؛ بلکه نمونه محصولی است که متادیتای DenaPay آن در جریان آزمایش بررسی شد.
+
+## نتیجه این آزمایش
+
+نتیجه این مرحله باعث تغییر جهت معماری پروژه شد:
+
+```text
+Runtime Global Plan Filtering
+        ↓
+Multiple DenaPay Internal Paths
+        ↓
+Maintenance & Compatibility Problems
+        ↓
+Product Meta Investigation
+        ↓
+DenaPay Product-Specific Plans Discovered
+        ↓
+ELVA Rule Calculation
+        ↓
+Synchronization to Native DenaPay Product Meta
+```
+
+بنابراین `denapay-product-meta-inspector.php` به‌عنوان یک ابزار تحقیق و Debug در پوشه `experiments` نگه‌داری شده است و بخشی از نسخه Production پلاگین ELVA Installment Manager نیست.
+
+---
+
 # تصمیم معماری نهایی
 
 بعد از بررسی ساختار داخلی DenaPay، یک قابلیت مهم مشخص شد:

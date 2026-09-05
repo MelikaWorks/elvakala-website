@@ -93,7 +93,7 @@ A sample product was manually configured with DenaPay installment settings in or
 
 Screenshot from the investigation:
 
-![DenaPay Product Custom Installment Plan](../screenshots/denapay-product-custom-installment-plan.png)
+![DenaPay Product Custom Installment Plan](/screenshots/denapay-product-custom-installment-plan.png)
 
 This screenshot represents a manually configured product-level installment plan used during the investigation phase.
 

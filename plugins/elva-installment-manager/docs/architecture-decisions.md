@@ -81,11 +81,31 @@ Manual configuration would be:
 
 ---
 
-## Network Investigation
+# Manual Product Configuration Investigation
 
-After identifying the need for automation, the next step was investigating how DenaPay works internally.
+To understand the DenaPay product-level installment workflow, a sample WooCommerce product was manually configured with installment settings.
 
-Browser developer tools were used to inspect DenaPay-related frontend behavior on WooCommerce product pages.
+This investigation was performed to understand:
+
+- How DenaPay handles product-specific installment plans
+- What data needs to be generated automatically
+- Whether ELVA could replace manual configuration with an automated process
+
+Screenshot from manual product configuration:
+
+![DenaPay Product Custom Installment Configuration](../screenshots/denapay-product-custom-installment-configuration.png)
+
+The result showed that DenaPay supports defining installment plans directly on individual products.
+
+However, this approach is not practical for large product catalogs.
+
+---
+
+# Network Investigation
+
+After identifying the limitations of manual configuration, DenaPay frontend behavior was investigated.
+
+Browser developer tools were used to inspect DenaPay-related resources and requests on WooCommerce product pages.
 
 The purpose of this investigation was to understand:
 
@@ -93,9 +113,13 @@ The purpose of this investigation was to understand:
 - How DenaPay integrates with WooCommerce frontend pages
 - Whether frontend requests could provide enough information for automation
 
-During the investigation, Fetch/XHR requests and loaded resources were monitored.
+Screenshot from product page network inspection:
 
-Screenshot from the network investigation:
+![DenaPay Product Installment Network Inspection](../screenshots/denapay-product-installment-network-inspection.png)
+
+During the investigation, Fetch/XHR requests were also monitored.
+
+Screenshot from Fetch/XHR analysis:
 
 ![DenaPay Network Request Analysis](../screenshots/denapay-network-inspection-fetch-analysis.png)
 
@@ -105,9 +129,9 @@ Because of this limitation, the investigation moved to server-side product metad
 
 ---
 
-## Product Meta Structure Investigation
+# Product Meta Structure Investigation
 
-After analyzing the frontend behavior of DenaPay, a read-only diagnostic tool was created to inspect the actual product metadata stored by DenaPay.
+A read-only diagnostic tool was created to inspect the actual product metadata stored by DenaPay.
 
 Tool:
 
@@ -147,9 +171,13 @@ Array
 )
 ```
 
-The actual values of `prepayment` and `check_amount` depend on the product price and installment business rules.
+The actual values of `prepayment` and `check_amount` depend on:
 
-Screenshot from the metadata investigation:
+- Product price
+- Installment rules
+- Business conditions
+
+Screenshot from metadata inspection:
 
 ![DenaPay Product Meta Inspector Result](../screenshots/denapay-product-meta-inspector-result-01.png)
 
@@ -161,7 +189,7 @@ Instead, ELVA can calculate business rules independently and synchronize the gen
 
 # Initial Approach — Automation Bot
 
-The first solution idea was creating an automation layer that could:
+Based on the investigation results, the first solution idea was creating an automation layer that could:
 
 1. Find products based on business rules.
 2. Match products with installment rules.

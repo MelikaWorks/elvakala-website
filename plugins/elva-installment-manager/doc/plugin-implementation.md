@@ -22,7 +22,7 @@ A dedicated WordPress admin menu was added:
 The admin panel provides a management interface for installment rules.
 
 ![ELVA Installment Rules Admin
-Panel](elva-installment-rules-admin-panel.png)
+Panel](../screenshots/elva-installment-rules-admin-panel.png)
 
 ------------------------------------------------------------------------
 
@@ -39,7 +39,7 @@ The admin panel supports:
 -   Deleting existing rules
 
 ![Rule Management
-Interface](elva-installment-rule-management-interface.png)
+Interface](../screenshots/elva-installment-rule-management-interface.png)
 
 ------------------------------------------------------------------------
 
@@ -118,7 +118,7 @@ Test data:
 
 Screenshot:
 
-![Rule Save Success](rule-save-success.png)
+![Rule Save Success](../screenshots/rule-save-success.png)
 
 ------------------------------------------------------------------------
 
@@ -128,7 +128,7 @@ The created rule appears in the registered rules table.
 
 Screenshot:
 
-![Rule Save Verification](rule-save-verification.png)
+![Rule Save Verification](../screenshots/rule-save-verification.png)
 
 Expected result:
 
@@ -151,7 +151,7 @@ Before:
 
 Screenshot:
 
-![Before Edit](rule-before-edit.png)
+![Before Edit](../screenshots/rule-before-edit.png)
 
 After:
 
@@ -161,7 +161,7 @@ After:
 
 Screenshot:
 
-![After Edit](rule-after-edit.png)
+![After Edit](../screenshots/rule-after-edit.png)
 
 ------------------------------------------------------------------------
 
@@ -177,11 +177,11 @@ Flow:
 
 Confirmation:
 
-![Delete Confirmation](rule-delete-confirmation.png)
+![Delete Confirmation](../screenshots/rule-delete-confirmation.png)
 
 Result:
 
-![Delete Success](rule-delete-success.png)
+![Delete Success](../screenshots/rule-delete-success.png)
 
 ------------------------------------------------------------------------
 

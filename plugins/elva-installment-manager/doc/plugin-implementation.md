@@ -1,150 +1,203 @@
-# ELVA DenaPay Rules Manager --- Rule Management Implementation
+# ELVA Installment Manager - Implementation
 
-This document describes the implementation and verification of the ELVA
-installment rule management panel.
+## Overview
 
-The purpose of this component is to provide a business rule management
-layer before synchronizing installment configurations with DenaPay.
+This document describes the implementation of the ELVA Installment
+Manager module.
 
-------------------------------------------------------------------------
+The purpose of this module is to manage installment business rules based
+on WooCommerce product categories.
 
-# Implementation Goal
-
-The initial goal was to create a separate rule management interface
-where ELVA business rules can be defined without directly modifying
-DenaPay data.
-
-The rule manager allows defining installment conditions based on
-WooCommerce product categories.
-
-Example:
-
-    Category:
-    Built-in Gas Cookers - Parnian
-
-    Rule:
-    20% initial payment
-    5 checks
-    5 months
+At this stage, the module only manages installment rules. It does not
+synchronize data with DenaPay yet.
 
 ------------------------------------------------------------------------
 
-# Admin Panel Implementation
+## Admin Menu
 
-A new WordPress admin menu was added:
+A new WordPress admin menu has been created:
 
-    ELVA اقساط
+    ELVA Installment
 
-This page provides:
+The page provides a management interface for installment rules.
 
--   Creating new installment rules
+------------------------------------------------------------------------
+
+## Rule Management
+
+The admin panel supports:
+
+-   Creating installment rules
 -   Selecting WooCommerce product categories
--   Defining payment percentage
--   Defining number of checks
--   Defining installment duration
--   Viewing saved rules
+-   Setting down payment percentage
+-   Setting number of checks
+-   Setting installment duration
 -   Editing existing rules
 -   Deleting rules
 
 ------------------------------------------------------------------------
 
-# Rule Storage
+## Rule Data Structure
 
-Rules are stored in WordPress options.
+Each installment rule contains:
 
-The rule manager currently stores business rules only.
+  Field                   Description
+  ----------------------- --------------------------------
+  Category                WooCommerce product category
+  Prepayment Percentage   Initial payment percentage
+  Checks                  Number of checks
+  Duration                Installment duration in months
 
-It does not:
+Example:
 
--   Modify DenaPay metadata
--   Update products
--   Calculate installment amounts
--   Run synchronization
+    Category:
+    Stove Parnian Steel
 
-These responsibilities belong to the synchronization layer.
+    Prepayment:
+    20%
 
-------------------------------------------------------------------------
+    Checks:
+    5
 
-# Verification Process
-
-## Create Rule
-
-A new installment rule was created successfully.
-
-![Rule Save Success](../screenshots/rule-save-success.png)
-
-## Verify Saved Rule
-
-The created rule appeared correctly in the saved rules table.
-
-![Rule Save Verification](../screenshots/rule-save-verification.png)
-
-## Edit Rule
-
-Existing rules can be loaded and updated.
-
-![Rule Before Edit](../screenshots/rule-before-edit.png)
-
-![Rule After Edit](../screenshots/rule-after-edit.png)
-
-## Delete Rule
-
-Delete operation was tested with confirmation.
-
-![Rule Delete Confirmation](../screenshots/rule-delete-confirmation.png)
-
-After deletion:
-
-![Rule Delete Success](../screenshots/rule-delete-success.png)
+    Duration:
+    5 months
 
 ------------------------------------------------------------------------
 
-# Current Architecture Position
+## Category Selection
 
-    ELVA Rule Manager
+The rule manager uses real WooCommerce product categories.
 
-            |
-            v
+Category hierarchy is supported.
 
-    Business Rules Storage
+Example:
 
-            |
-            v
-
-    DenaPay Synchronization Engine
-
-            |
-            v
-
-    DenaPay Product Metadata
+    Kitchen Appliances
+     └── Stove
+          └── Parnian Steel Stove
 
 ------------------------------------------------------------------------
 
-# Decision
+## Storage
 
-The installment logic is separated from DenaPay.
+Installment rules are stored in WordPress options.
 
-ELVA manages:
+Storage key:
 
--   Business rules
--   Category selection
--   Installment conditions
+    elva_denapay_rules
 
-DenaPay remains responsible for:
-
--   Displaying installment options
--   Checkout integration
--   Payment processing
+The stored rules are prepared for future synchronization with DenaPay.
 
 ------------------------------------------------------------------------
 
-# Next Step
+## Tested Features
 
-The next implementation phase is the synchronization engine.
+### Create Rule
 
-The synchronization engine will:
+A new installment rule was successfully created.
 
-1.  Read saved ELVA rules.
-2.  Find matching WooCommerce products.
-3.  Calculate installment values based on current product prices.
-4.  Update DenaPay product installment metadata.
+Screenshot:
+
+    rule-save-success.png
+
+------------------------------------------------------------------------
+
+### Saved Rule Verification
+
+The created rule appears in the registered rules table.
+
+Screenshot:
+
+    rule-save-verification.png
+
+Example output:
+
+    Category: Parnian Steel Stove
+    Prepayment: 20%
+    Checks: 5
+    Duration: 5
+
+------------------------------------------------------------------------
+
+### Edit Rule
+
+Editing an existing rule was tested successfully.
+
+Test scenario:
+
+Before:
+
+    Prepayment: 20%
+    Checks: 5
+    Duration: 5
+
+After:
+
+    Prepayment: 30%
+    Checks: 4
+    Duration: 4
+
+Screenshots:
+
+    rule-before-edit.png
+    rule-after-edit.png
+
+------------------------------------------------------------------------
+
+### Delete Rule
+
+Deleting an installment rule was tested successfully.
+
+Flow:
+
+1.  Click delete action
+2.  Confirm deletion
+3.  Rule removed from the list
+
+Screenshots:
+
+    rule-delete-confirmation.png
+    rule-delete-success.png
+
+------------------------------------------------------------------------
+
+## Current Capabilities
+
+The module currently supports:
+
+-   Installment rule management
+-   WooCommerce category-based rules
+-   Rule creation
+-   Rule editing
+-   Rule deletion
+-   Rule listing
+
+------------------------------------------------------------------------
+
+## Not Implemented Yet
+
+The following features are intentionally not included in this stage:
+
+-   DenaPay metadata update
+-   Product synchronization
+-   Automatic installment calculation on products
+-   Bulk sync execution
+
+------------------------------------------------------------------------
+
+## Next Step
+
+The next implementation phase is:
+
+# DenaPay Sync Runner
+
+Responsibilities:
+
+1.  Read saved installment rules
+2.  Find products matching each category
+3.  Calculate installment values based on current product prices
+4.  Prepare DenaPay metadata
+5.  Execute synchronization
+
+The first implementation will use Dry Run mode to validate calculations
+before applying changes.

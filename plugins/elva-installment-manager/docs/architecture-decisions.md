@@ -83,55 +83,53 @@ Manual configuration would be:
 
 # Manual Product Configuration Investigation
 
-To understand the DenaPay product-level installment workflow, a sample WooCommerce product was manually configured with installment settings.
+To understand how DenaPay handles product-level installment plans, a sample WooCommerce product was manually configured.
 
-This investigation was performed to understand:
+The purpose of this step was to verify:
 
-- How DenaPay handles product-specific installment plans
-- What data needs to be generated automatically
-- Whether ELVA could replace manual configuration with an automated process
+- Whether DenaPay supports product-specific installment rules
+- How installment plans appear on individual products
+- What information would need to be automated later
 
-Screenshot from manual product configuration:
+Screenshot:
 
 ![DenaPay Product Custom Installment Configuration](../screenshots/denapay-product-custom-installment-configuration.png)
 
-The result showed that DenaPay supports defining installment plans directly on individual products.
+The result confirmed that DenaPay allows installment configuration directly on individual products.
 
-However, this approach is not practical for large product catalogs.
+However, manually applying this configuration to hundreds of products is not practical.
 
 ---
 
 # Network Investigation
 
-After identifying the limitations of manual configuration, DenaPay frontend behavior was investigated.
+After confirming that product-level configuration exists, the next step was investigating DenaPay frontend behavior.
 
-Browser developer tools were used to inspect DenaPay-related resources and requests on WooCommerce product pages.
+Browser developer tools were used to inspect:
 
-The purpose of this investigation was to understand:
+- Loaded DenaPay resources
+- Frontend requests
+- Fetch/XHR activity on WooCommerce product pages
 
-- Which DenaPay assets are loaded
-- How DenaPay integrates with WooCommerce frontend pages
-- Whether frontend requests could provide enough information for automation
+The goal was to understand whether the frontend communication layer could be used for automation.
 
-Screenshot from product page network inspection:
+Screenshot:
 
 ![DenaPay Product Installment Network Inspection](../screenshots/denapay-product-installment-network-inspection.png)
 
-During the investigation, Fetch/XHR requests were also monitored.
-
-Screenshot from Fetch/XHR analysis:
+Additional Fetch/XHR analysis:
 
 ![DenaPay Network Request Analysis](../screenshots/denapay-network-inspection-fetch-analysis.png)
 
-The investigation showed that frontend network inspection alone was not sufficient to determine the complete product installment data structure.
+The investigation showed that frontend network inspection alone was not enough to identify the complete product installment data structure.
 
-Because of this limitation, the investigation moved to server-side product metadata inspection.
+Because of this limitation, the investigation moved to WordPress product metadata.
 
 ---
 
 # Product Meta Structure Investigation
 
-A read-only diagnostic tool was created to inspect the actual product metadata stored by DenaPay.
+After Network analysis, a read-only diagnostic tool was created to inspect the actual data stored by DenaPay.
 
 Tool:
 
@@ -139,9 +137,7 @@ Tool:
 tools/denapay-product-meta-inspector.php
 ```
 
-The purpose of this tool was to discover how DenaPay stores product-level installment configuration and identify the data structure required for future synchronization.
-
-The inspector reads the following WooCommerce product metadata:
+The tool reads:
 
 ```
 _denaPay_installment_enabled
@@ -153,9 +149,21 @@ and:
 _denaPay_installment_plans
 ```
 
-The investigation showed that DenaPay stores product-specific installment plans directly inside WooCommerce product metadata.
+The purpose was to discover the exact structure required for future synchronization.
 
-Example discovered structure:
+## Result 01
+
+The first result showed that DenaPay stores installment information directly on the WooCommerce product.
+
+![DenaPay Product Meta Inspector Result 01](../screenshots/denapay-product-meta-inspector-result-01.png)
+
+## Result 02
+
+The second result showed the stored array structure:
+
+![DenaPay Product Meta Inspector Result 02](../screenshots/denapay-product-meta-inspector-result-02.png)
+
+Example:
 
 ```php
 Array
@@ -177,13 +185,9 @@ The actual values of `prepayment` and `check_amount` depend on:
 - Installment rules
 - Business conditions
 
-Screenshot from metadata inspection:
+This confirmed that ELVA does not need to modify DenaPay frontend calculation logic.
 
-![DenaPay Product Meta Inspector Result](../screenshots/denapay-product-meta-inspector-result-01.png)
-
-This investigation confirmed that ELVA does not need to modify DenaPay frontend calculation logic.
-
-Instead, ELVA can calculate business rules independently and synchronize the generated installment plan data into the native DenaPay product metadata structure.
+Instead, ELVA can calculate business rules independently and synchronize generated installment plan data into the native DenaPay product metadata structure.
 
 ---
 
@@ -196,7 +200,7 @@ Based on the investigation results, the first solution idea was creating an auto
 3. Calculate installment values.
 4. Update DenaPay product-level configuration automatically.
 
-The expected flow:
+Expected flow:
 
 ```
 Business Rule

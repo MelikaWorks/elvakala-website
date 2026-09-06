@@ -1,4 +1,3 @@
-
 # ELVA KALA Website Engineering
 
 This repository documents the custom engineering, frontend development, plugin extensions, performance work, experiments, and operational improvements developed for the ELVA KALA WooCommerce website.

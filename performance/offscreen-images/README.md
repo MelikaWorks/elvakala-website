@@ -1,84 +1,164 @@
 # ELVA Offscreen Image Optimization
 
-This directory documents the optimization of non-critical offscreen images on the Elva Kala website.
+This directory documents the targeted optimization of non-critical offscreen images on the ELVA KALA website.
 
-The goal was to reduce unnecessary image loading during the initial page render by applying native lazy loading to selected images that appear outside the initial viewport.
+The goal was to reduce unnecessary image loading during the initial page render by applying native lazy loading only to selected images located outside the initial viewport.
 
 ## Initial Lighthouse Audit
 
-The initial Lighthouse **Defer offscreen images** audit reported approximately **20 KiB** of estimated savings.
+The initial Lighthouse **Defer offscreen images** audit reported approximately:
 
-The report identified several offscreen images, including footer assets and third-party resources.
+```text
+20 KiB estimated savings
+```
+
+The report identified several offscreen images, including ELVA-controlled footer images and third-party resources.
+
+<p align="center">
+  <img src="./01-before-offscreen-image-optimization.png"
+       alt="Lighthouse offscreen image opportunity before optimization"
+       width="800">
+</p>
 
 ## Optimization
 
-Two non-critical WordPress images controlled by the Elva Kala website were selected for optimization:
+Two non-critical WordPress images controlled by ELVA KALA were selected for optimization:
 
-- Attachment ID `28556` — Elvakala footer logo
-- Attachment ID `28558` — National standard logo
+* Attachment ID `28556` — ELVA KALA footer logo
+* Attachment ID `28558` — National Standard Organization logo
 
 The following attributes are applied to these images:
 
-- `loading="lazy"`
-- `decoding="async"`
-- `fetchpriority="low"`
+```html
+loading="lazy"
+decoding="async"
+fetchpriority="low"
+```
 
-Existing conflicting loading, decoding, and fetch priority attributes are removed before the optimized attributes are applied.
+Existing conflicting `loading`, `decoding`, and `fetchpriority` attributes are removed before the optimized attributes are applied.
 
-The optimization is intentionally limited to selected known offscreen images rather than globally modifying image loading across the website.
+The optimization is intentionally restricted to known offscreen images instead of globally modifying WordPress image-loading behavior.
 
 ## Implementation
 
-The optimization is implemented through the WordPress snippet:
+The optimization is implemented through the following WordPress snippet:
 
-`/snippets/performance/lazy-load-footer-images.php`
+```text
+/snippets/performance/lazy-load-footer-images.php
+```
 
-This allows the optimization to be enabled, modified, or rolled back without changing the original theme or image files.
+This allows the optimization to be enabled, modified, or rolled back without editing WordPress, Elementor, or theme core files.
 
 ## Lighthouse Results
 
 ### Before Optimization
 
-Screenshot:
+The initial Lighthouse audit reported approximately:
 
-`01-before-offscreen-image-optimization.png`
+```text
+20 KiB estimated savings
+```
 
-Lighthouse reported approximately:
+### After Targeted Optimization
 
-**20 KiB estimated savings**
+After applying lazy loading to the selected ELVA-controlled footer images, the remaining opportunity was reduced to approximately:
 
-### After Optimization
+```text
+9 KiB estimated savings
+```
 
-Screenshot:
+<p align="center">
+  <img src="./02-after-offscreen-image-optimization.png"
+       alt="Lighthouse offscreen image opportunity after targeted optimization"
+       width="800">
+</p>
 
-`02-after-offscreen-image-optimization.png`
+### Current Validation
 
-After applying lazy loading to the selected images, the remaining opportunity was reduced to approximately:
+A later Lighthouse validation reduced the remaining opportunity to approximately:
 
-**9 KiB estimated savings**
+```text
+3 KiB estimated savings
+```
+
+The only resource still reported was a third-party ZarinPal trust-logo image served from:
+
+```text
+cdn.zarinpal.com
+```
+
+<p align="center">
+  <img src="./03-current-offscreen-images-remaining-3kb.png"
+       alt="Current Lighthouse offscreen image audit showing only the external ZarinPal logo"
+       width="800">
+</p>
 
 ## Result
 
-The optimization reduced the Lighthouse **Defer offscreen images** opportunity from approximately:
+The Lighthouse **Defer offscreen images** opportunity was reduced from approximately:
 
-**20 KiB → 9 KiB**
+```text
+20 KiB → 9 KiB → 3 KiB
+```
 
-The audit was not completely eliminated because some remaining offscreen resources are outside the scope of this targeted optimization, including third-party assets.
+The remaining resource is externally hosted and outside the direct scope of the ELVA-controlled WordPress attachment optimization.
 
-Rather than applying aggressive lazy loading globally, this implementation targets only known non-critical images to minimize the risk of affecting above-the-fold content or LCP performance.
+Applying aggressive global lazy-loading changes for an additional saving of approximately 3 KiB would provide limited benefit and could introduce unnecessary risk to critical images and LCP behavior.
 
 ## Validation
 
-After implementation, the affected areas were checked to ensure that:
+The following checks passed after implementation:
 
-- Footer images still render correctly
-- Images load when they approach the viewport
-- Critical above-the-fold images are unaffected
-- Footer layout remains unchanged
-- No global WordPress image-loading behavior is modified
+* Footer images still render correctly
+* Optimized images load when approaching the viewport
+* Critical above-the-fold images remain unaffected
+* Homepage LCP assets remain unchanged
+* Footer layout remains unchanged
+* No global WordPress image-loading behavior is modified
+* Desktop presentation remains functional
+* Responsive presentation remains functional
+
+## Scope
+
+This implementation affects only the explicitly selected WordPress attachment IDs.
+
+It does not globally modify:
+
+* Product images
+* Hero slider images
+* Category images
+* Above-the-fold images
+* Elementor image widgets
+* Third-party image resources
+* Default WordPress lazy-loading behavior
 
 ## Rollback
 
-The optimization can be rolled back by disabling the corresponding WordPress snippet.
+To roll back the optimization:
 
-No original theme or image files were modified as part of this optimization.
+1. Open the WPCode snippet manager.
+
+2. Deactivate the snippet associated with:
+
+   ```text
+   lazy-load-footer-images.php
+   ```
+
+3. Clear WordPress, server, CDN, and browser caches.
+
+4. Reload the affected pages and verify the footer images.
+
+No original theme, plugin, Elementor, media-library, or image files were modified.
+
+## Status
+
+```text
+Production: Active
+Initial opportunity: Approximately 20 KiB
+After targeted optimization: Approximately 9 KiB
+Current remaining opportunity: Approximately 3 KiB
+Remaining resource: Third-party ZarinPal trust logo
+Desktop validation: PASS
+Responsive validation: PASS
+Rollback available: Yes
+```

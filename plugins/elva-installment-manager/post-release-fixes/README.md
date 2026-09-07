@@ -17,6 +17,11 @@ fixed, and verified in the live WooCommerce workflow on September 7, 2026:
 
 A new rule had been created for the Bimax cooktop category, but one of its
 products continued to display the previous two-installment, two-month plan.
+<p align="center">
+  <img src="./01-before-bimax-old-2-installment-plan.jpg"
+       alt="The Bimax product still displayed its old two-installment plan"
+       width="400">
+</p>
 
 ![The Bimax product still displayed its old two-installment plan](01-before-bimax-old-2-installment-plan.jpg)
 
@@ -24,7 +29,11 @@ At the same time, the Bimax rule appeared correctly in the Rules Manager table.
 The rule had therefore been persisted, but saving it had not updated the
 DenaPay metadata of products in the category.
 
-![The Bimax rule was saved but not applied to its products](02-before-rules-saved-but-not-applied.jpg)
+<p align="center">
+  <img src="./01-before-bimax-old-2-installment-plan.jpg"
+       alt="The Bimax product still displayed its old two-installment plan"
+       width="400">
+</p>
 
 ### Root cause
 
@@ -55,13 +64,22 @@ products without explicit confirmation.
 The corrected Bimax run found 13 products and synchronized all 13 successfully,
 with no skipped products.
 
-![The rule was successfully applied to all 13 Bimax products](03-after-apply-action-13-products-synced.jpg)
+<p align="center">
+  <img src="./03-after-apply-action-13-products-synced.jpg"
+       alt="The Bimax product still displayed its old two-installment plan"
+       width="400">
+</p>
 
 After the operation, the test product displayed the new rule with a 30%
 prepayment, five checks, and a five-month duration. The plan total also matched
 the product's Regular Price.
 
-![The corrected Bimax rule rendered on the product page](04-after-bimax-rule-applied.jpg)
+<p align="center">
+  <img src="./04-after-bimax-rule-applied.jpg"
+       alt="The Bimax product still displayed its old two-installment plan"
+       width="400">
+</p>
+
 
 ## Issue 2: Updated prices were not synchronized with installment amounts
 
@@ -70,14 +88,23 @@ the product's Regular Price.
 The original listener was active but remained in the `WAITING` state during the
 actual Bazara workflow. No event was recorded to rebuild the installment plan.
 
-![The original listener remained in the waiting state](05-before-bazara-hook-waiting.jpg)
+<p align="center">
+  <img src="./05-before-bazara-hook-waiting.jpg"
+       alt="The Bimax product still displayed its old two-installment plan"
+       width="400">
+</p>
 
 In the Parnian test product, the WooCommerce Regular Price had changed to
 38,387,000 toman, while the installment plan still totaled 38,377,000 toman.
 The installment count could be updated, but the fixed monetary values still
 came from the previous price.
 
-![Regular Price and the stored installment total did not match](06-before-installment-price-not-synced.jpg)
+<p align="center">
+  <img src="./06-before-installment-price-not-synced.jpg"
+       alt="The Bimax product still displayed its old two-installment plan"
+       width="400">
+</p>
+
 
 ### Root cause
 
@@ -114,7 +141,11 @@ After the fix, the Parnian product price and installment plan matched exactly:
 The cash Sale Price of 34,548,300 toman was not used in the installment
 calculation.
 
-![Regular Price and all installment values matched after synchronization](07-after-price-and-installments-synced.png)
+<p align="center">
+  <img src="./07-after-price-and-installments-synced.png"
+       alt="The Bimax product still displayed its old two-installment plan"
+       width="400">
+</p>
 
 For final verification, the Regular Price of a Parnian product was saved in a
 controlled test without using the category-level **Apply to products** action.
@@ -126,7 +157,12 @@ The listener recorded:
 - Matched rule: Parnian cooktops
 - Calculation price: `38387000`
 
-![Auto Sync successfully detected the product save and matched the Parnian rule](08-after-auto-sync-success.jpg)
+<p align="center">
+  <img src="./08-after-auto-sync-success.jpg"
+       alt="The Bimax product still displayed its old two-installment plan"
+       width="400">
+</p>
+
 
 ## Verification summary
 

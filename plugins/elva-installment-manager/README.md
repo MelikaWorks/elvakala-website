@@ -66,14 +66,31 @@ Validated milestones:
 - Calculated a category dry run for 13 products
 - Built and tested private rule-management CRUD
 - Ran a controlled 13-product synchronization
-- Investigated automatic price-change detection
+- Added an explicit rule-application action for matching products
+- Verified automatic recalculation after a WooCommerce product-price save
 
-The final storefront was not revisited after the last 30% / four-check /
-four-month batch, so this repository does not claim that additional visual
-verification. The controlled Runner did report `SYNCED ✓` for the matched
-products.
+The production follow-up confirmed that all 13 matched Bimax products could be
+synchronized without skips. A controlled Parnian product-price save also
+triggered the automatic listener, matched the stored category rule, recalculated
+the installment amounts from Regular Price, and rendered the corrected values
+on the storefront.
 
 [Read the metadata approach](docs/04-approach-b-product-metadata.md)
+
+## Post-release fixes
+
+Two integration issues were identified and resolved after the initial
+production rollout:
+
+- Saved category rules were persisted but were not written to matching products.
+- Fixed installment amounts were not recalculated after product-price updates.
+
+The Rules Manager now separates rule persistence from an explicit
+**Apply to products** operation. Automatic recalculation now listens to the
+WooCommerce product-save path used by the installed Bazara version, while the
+Bazara importer-specific event remains available as a fallback.
+
+[Read the complete post-release fix report and test evidence](post-release-fixes/README.md)
 
 ## Repository structure
 
@@ -92,6 +109,16 @@ docs/
 experiments/
   mehranpay/
   metadata-investigation/
+post-release-fixes/
+  README.md
+  01-before-bimax-old-2-installment-plan.jpg
+  02-before-rules-saved-but-not-applied.jpg
+  03-after-apply-action-13-products-synced.jpg
+  04-after-bimax-rule-applied.jpg
+  05-before-bazara-hook-waiting.jpeg
+  06-before-installment-price-not-synced.jpeg
+  07-after-price-and-installments-synced.png
+  08-after-auto-sync-success.jpg
 screenshots/
   approach-a-mehranpay/
   approach-b-metadata/
@@ -115,9 +142,15 @@ commercial plugin.
 
 ## Status
 
-The product-metadata architecture and controlled batch execution were
-validated. Automatic synchronization after Mahak/Bazara price updates remained
-an integration checkpoint at the end of the supplied evidence.
+The product-metadata architecture, explicit category-rule application,
+controlled batch synchronization, and automatic installment recalculation after
+product-price saves have been validated successfully.
+
+Post-release verification included a 13-product category sync with no skipped
+products, storefront calculation checks using Regular Price rather than Sale
+Price, and a successful product-save event with a matched Parnian category rule.
+
+[View the post-release verification report](post-release-fixes/README.md)
 
 ## Disclaimer
 

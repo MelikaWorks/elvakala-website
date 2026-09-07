@@ -70,14 +70,14 @@ the product's Regular Price.
 The original listener was active but remained in the `WAITING` state during the
 actual Bazara workflow. No event was recorded to rebuild the installment plan.
 
-![The original listener remained in the waiting state](05-before-bazara-hook-waiting.jpeg)
+![The original listener remained in the waiting state](05-before-bazara-hook-waiting.jpg)
 
 In the Parnian test product, the WooCommerce Regular Price had changed to
 38,387,000 toman, while the installment plan still totaled 38,377,000 toman.
 The installment count could be updated, but the fixed monetary values still
 came from the previous price.
 
-![Regular Price and the stored installment total did not match](06-before-installment-price-not-synced.jpeg)
+![Regular Price and the stored installment total did not match](06-before-installment-price-not-synced.jpg)
 
 ### Root cause
 

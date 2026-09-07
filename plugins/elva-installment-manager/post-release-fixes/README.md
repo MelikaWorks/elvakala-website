@@ -23,14 +23,13 @@ products continued to display the previous two-installment, two-month plan.
        width="400">
 </p>
 
-![The Bimax product still displayed its old two-installment plan](01-before-bimax-old-2-installment-plan.jpg)
 
 At the same time, the Bimax rule appeared correctly in the Rules Manager table.
 The rule had therefore been persisted, but saving it had not updated the
 DenaPay metadata of products in the category.
 
 <p align="center">
-  <img src="./01-before-bimax-old-2-installment-plan.jpg"
+  <img src="./02-before-rules-saved-but-not-applied.jpg"
        alt="The Bimax product still displayed its old two-installment plan"
        width="400">
 </p>

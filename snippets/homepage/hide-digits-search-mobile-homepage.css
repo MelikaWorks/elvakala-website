@@ -1,0 +1,41 @@
+@media (max-width: 767px) {
+
+    /* حذف کادر جستجوی اضافی Digits */
+  /* Hide the extra Digits search box */
+  
+    body.home > #digits_country_list_wrapper {
+        display: none !important;
+    }
+
+    /* اصلاح جای آیکن شماره دوم واحد فروش */
+  /* Fix the position of the second sales phone number icon */
+  
+    .elementor-5332
+    .elementor-element.elementor-element-3a4570f
+    .elementor-widget-container {
+        display: flex !important;
+        justify-content: center !important;
+    }
+
+    .elementor-5332
+    .elementor-element.elementor-element-3a4570f
+    .elementor-icon-box-wrapper {
+        display: inline-flex !important;
+        align-items: center !important;
+        width: auto !important;
+    }
+
+    .elementor-5332
+    .elementor-element.elementor-element-3a4570f
+    .elementor-icon-box-icon {
+        margin: 0 0 0 15px !important;
+        flex: 0 0 auto !important;
+    }
+}
+@media (max-width: 767px) {
+    .elementor-5332
+    .elementor-element.elementor-element-3a4570f
+    .elementor-icon-box-icon {
+        transform: translateX(-30px) !important;
+    }
+}

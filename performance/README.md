@@ -299,6 +299,10 @@ Final recorded Lighthouse results:
 - Cumulative Layout Shift (CLS): **0.001**
 - Speed Index: **15.3 s**
 
+  <img src="lighthouse-mobile-final-2026-09-26.png"
+     alt="lighthouse-mobile-final-2026-09-26.png"
+     width="300">
+
 The most important improvement was reducing homepage LCP from approximately **11–19 seconds** in early audits to **3.2 seconds** in the final recorded audit. Layout stability also remained excellent with a CLS of **0.001**.
 
 The final evidence screenshot is stored in this directory as:

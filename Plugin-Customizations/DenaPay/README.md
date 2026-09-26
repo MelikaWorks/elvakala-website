@@ -186,6 +186,28 @@ Server-side validation provides the corresponding enforcement and prevents an in
 
 ---
 
+## Removal of the Additional Installment Discount
+
+The following screenshots document the installment pricing before and after removing the additional 10% installment discount.
+
+### Before
+
+The installment calculation incorrectly included the additional discount.
+
+<img src="06-installment-extra-discount-before.png"
+     alt="Installment pricing before removing the additional discount"
+     width="300">
+
+### After
+
+The installment plan is calculated from the configured installment base price without applying the additional 10% discount again.
+
+<img src="07-installment-extra-discount-after.png"
+     alt="Installment pricing after removing the additional discount"
+     width="300">
+
+---
+
 # Production Pricing and Synchronization Validation
 
 ## Removal of the Additional Installment Discount

@@ -281,6 +281,34 @@ This file contains only the cache configuration introduced during this optimizat
 
 ---
 
+## Final Lighthouse Baseline
+
+The final clean homepage audit was recorded on **2026-09-26** using the canonical homepage URL:
+
+`https://elvakala.com/`
+
+Final recorded Lighthouse results:
+
+- Performance: **72**
+- Accessibility: **86**
+- Best Practices: **100**
+- SEO: **100**
+- First Contentful Paint (FCP): **2.7 s**
+- Largest Contentful Paint (LCP): **3.2 s**
+- Total Blocking Time (TBT): **310 ms**
+- Cumulative Layout Shift (CLS): **0.001**
+- Speed Index: **15.3 s**
+
+The most important improvement was reducing homepage LCP from approximately **11–19 seconds** in early audits to **3.2 seconds** in the final recorded audit. Layout stability also remained excellent with a CLS of **0.001**.
+
+The final evidence screenshot is stored in this directory as:
+
+`lighthouse-mobile-final-2026-09-26.png`
+
+The remaining performance cost is primarily associated with the production WordPress, WooCommerce, Elementor, slider, and third-party plugin stack. Further aggressive optimization was intentionally avoided because it could compromise storefront functionality and production stability.
+
+---
+
 ## Related Code
 
 Executable snippets used by these performance optimizations are stored separately in:
@@ -325,6 +353,7 @@ Individual optimizations are therefore documented according to the specific reso
 
 ```text
 performance/
+├── lighthouse-mobile-final-2026-09-26.png
 ├── digits-homepage-assets/
 ├── homepage-lcp/
 ├── improve-image-delivery/
@@ -350,8 +379,12 @@ snippets/
 
 ## Status
 
-Performance optimization is an ongoing process.
+The documented performance optimization phase is complete and classified as:
+
+**Stable / Final QA Passed**
+
+The final homepage Lighthouse baseline is preserved in the repository together with the implementation notes, rollback assets, and task-specific evidence.
 
 Completed work is documented independently so that each change can be reviewed, tested, maintained, or rolled back without losing the history of the optimization process.
 
-Remaining Lighthouse opportunities are handled as separate tasks rather than applying aggressive global changes that could compromise the stability of Elementor, WooCommerce, the theme, or other production functionality.
+Remaining Lighthouse opportunities are accepted as limitations of the current production stack. Any future optimization should be handled as a separate, controlled task rather than applying aggressive global changes that could compromise the stability of Elementor, WooCommerce, the theme, or other production functionality.

@@ -43,14 +43,17 @@ The fix:
 
 ## Before
 
-![Mobile homepage footer before](mobile-homepage-footer-before.png)
+<img src="mobile-homepage-footer-before.png"
+     alt="Mobile homepage footer before"
+     width="350">
 
 The extra Digits search box was visible, and the second sales phone icon was incorrectly positioned.
 
 ## After
 
-![Mobile homepage footer after](mobile-homepage-footer-after.png)
-
+<img src="mobile-homepage-footer-after.png"
+     alt="Mobile homepage footer after"
+     width="350">
 The extra search box is hidden, and the second sales phone icon is correctly aligned.
 
 ## Scope

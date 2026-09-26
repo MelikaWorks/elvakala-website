@@ -4,7 +4,7 @@ This directory contains the custom integration and behavior adjustments develope
 
 The original plugin provides the installment payment functionality. The code documented here extends that functionality to match ELVA KALA's specific installment sales rules and checkout requirements.
 
-The plugin's original source files are not modified in this repository. The customization is implemented separately so that the additional business rules can be maintained independently from the third-party plugin.
+The plugin's original source files are not modified or redistributed in this repository. The customization is implemented separately so that the additional business rules can be maintained independently from the third-party plugin.
 
 ---
 
@@ -14,7 +14,7 @@ ELVA KALA currently offers DenaPay installment purchases only to customers whose
 
 Additional information also needs to be presented to customers during the purchase process so that the geographic restriction, installment conditions, shipping information, and check-delivery requirements are clear before the order is completed.
 
-The customization therefore adds ELVA KALA-specific validation and customer-facing notices around the existing DenaPay payment flow.
+The customization therefore adds ELVA KALA-specific validation, pricing behavior, synchronization verification, and customer-facing notices around the existing DenaPay payment flow.
 
 ---
 
@@ -186,6 +186,67 @@ Server-side validation provides the corresponding enforcement and prevents an in
 
 ---
 
+# Production Pricing and Synchronization Validation
+
+## Removal of the Additional Installment Discount
+
+The additional 10% discount previously applied to installment purchases was removed from the production DenaPay configuration.
+
+Cash purchases may continue to use the applicable WooCommerce promotional or sale price, while installment calculations use the configured installment base price without the additional 10% installment discount.
+
+This prevents an unintended second discount from being applied to installment orders.
+
+---
+
+## End-to-End Price Synchronization Test
+
+A real product price change was performed by the ELVA KALA financial operator to verify the complete production synchronization path:
+
+```text
+Mahak → Bazara → WooCommerce → DenaPay
+```
+
+The test confirmed that:
+
+- The updated product price was received from Mahak through Bazara.
+- WooCommerce displayed the updated price correctly.
+- The cash purchase price was recalculated correctly.
+- DenaPay received the updated product information.
+- The installment plan was recalculated using the correct installment base price.
+- The removed 10% installment discount was not applied again.
+- The product remained purchasable through both cash and installment methods.
+
+---
+
+## Production Verification
+
+The final production flow was tested on both desktop and mobile devices.
+
+The following scenarios passed:
+
+- Product page display
+- Cash payment selection
+- Installment payment selection
+- Installment plan calculation
+- Cart display
+- Checkout availability
+- Mahak/Bazara price synchronization
+- DenaPay recalculation after a real price update
+
+No new related PHP error was recorded in `error_log` after the final synchronization test.
+
+**Final status:** `Stable / Operational Pass`
+
+---
+
+## Private Integration Components
+
+The production Listener and synchronization implementation contain private integration details and are intentionally excluded from this public repository.
+
+This repository documents the integration behavior, business rules, validation process, and non-sensitive customization layer without publishing private synchronization code or third-party plugin source files.
+
+---
+
 # Technical Notes
 
 This customization is intentionally maintained separately from the original DenaPay plugin.
@@ -217,6 +278,8 @@ Server-side validation is required to ensure that an installment order cannot by
 
 The original DenaPay plugin files should remain unmodified whenever possible. ELVA KALA-specific behavior should continue to be maintained separately in this customization layer.
 
+After changes to product pricing, Bazara synchronization, WooCommerce pricing rules, or DenaPay calculations, the complete synchronization and checkout flow should be retested.
+
 ---
 
 # Repository Scope
@@ -225,4 +288,6 @@ This directory contains only the ELVA KALA-specific customization developed arou
 
 It does not contain or redistribute the original DenaPay plugin.
 
-Other independent WordPress and WooCommerce modifications are maintained under the repository's `Snippets` section, while customizations created specifically for third-party plugins are maintained under `Plugin-Customizations`.
+Private Listener and synchronization components are excluded from the repository.
+
+Other independent WordPress and WooCommerce modifications are maintained under the repository's `snippets` section, while customizations created specifically for third-party plugins are maintained under `Plugin-Customizations`.

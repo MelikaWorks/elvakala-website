@@ -1,4 +1,4 @@
-# ELVA KALA — Mobile Homepage Footer Fixes
+# ELVA KALA — Mobile Homepage Footer Fixes 
 
 Responsive CSS fixes for the ELVA KALA mobile homepage footer.
 

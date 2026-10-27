@@ -154,3 +154,26 @@ Remaining performance investigations and final baseline work are documented in t
 This repository is an evolving technical record of the ELVA KALA website. Individual directories may contain production code, documentation-only artifacts, prototypes, inactive snippets, or historical experiments; their local README files are the authoritative status reference.
 
 The September 2026 stability, DenaPay pricing, Bazara synchronization, WooCommerce REST compatibility, and mobile homepage footer changes have been documented and production-validated.
+
+## Author
+
+👩‍💻 **Melika Mehranpour**
+
+Senior Software Engineer | Full Stack .NET Developer | Enterprise Applications
+
+### Technologies
+
+**Professional technology stack:** C# • .NET • ASP.NET Core • SQL Server • PostgreSQL • Power BI • Python • .NET MAUI
+
+**Technologies used in this repository:** WordPress • WooCommerce • PHP • JavaScript • CSS • HTML • Elementor
+
+### Connect with Me
+
+- [LinkedIn](https://www.linkedin.com/in/melika-mehranpour-41b627161/)
+- [GitHub](https://github.com/MelikaWorks)
+
+---
+
+## License
+
+No repository-wide license has been added at this time. The repository includes custom ELVA KALA work and documentation referencing third-party commercial components. Individual files and third-party components may have separate licensing or publication restrictions.

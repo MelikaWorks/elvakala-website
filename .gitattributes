@@ -1,0 +1,13 @@
+# Keep language statistics focused on ELVA KALA's custom implementation.
+# Third-party theme sources retained as optimization/rollback references.
+performance/minify-css/source/*.css linguist-vendored
+performance/minify-js/source/*.js linguist-vendored
+
+# Generated, minified copies of those third-party assets.
+performance/minify-css/minified/*.css linguist-vendored linguist-generated
+performance/minify-js/minified/*.js linguist-vendored linguist-generated
+
+# Bundled third-party phone-number library.
+Plugin-Customizations/elva-digits-customizations/libphonenumber-max.js linguist-vendored
+
+# Custom PHP, CSS, HTML and JavaScript retain their actual language.

@@ -1,39 +1,41 @@
-# اتصال پیامک سفارش‌ها به NikSMS
+# NikSMS Order Notification Integration
 
-تاریخ مستندسازی: ۲۰۲۶-۱۱-۱۵
+[فارسی (FA)](README_FA.md)
 
-## پیاده‌سازی موجود
+Documented: 2026-11-15
 
-اتصال پیامک از طریق تنظیمات افزونه **پیامک ووکامرس فارسی** و سرویس **NikSMS.com** انجام شده است. این بخش مستندات پیکربندی است؛ کد اختصاصی جدید ارسال پیامک یا سورس افزونه تجاری در این مخزن قرار ندارد.
+## Existing implementation
 
-اطلاعات زیر از سابقه راه‌اندازی استخراج شده‌اند؛ در این نوبت پیشخوان سایت مستقیماً بررسی نشده است.
+Order SMS notifications are configured through the **Persian WooCommerce SMS** plugin (پیامک ووکامرس فارسی) and **NikSMS.com**. This directory documents configuration; it does not contain a new custom SMS sender or redistribute the commercial plugin source.
 
-| مورد | وضعیت ثبت‌شده |
+The following details come from the setup history. The live dashboard was not inspected during this repository update.
+
+| Setting | Recorded configuration |
 | --- | --- |
-| ارائه‌دهنده | NikSMS.com |
-| افزونه | پیامک ووکامرس فارسی |
-| تب اتصال | وب‌سرویس |
-| تب مدیران | پیامک مدیر کل |
-| وضعیت سفارش فعال‌شده | در حال انجام |
-| تعداد گیرندگان مدیر | سه گیرنده؛ شماره‌ها خصوصی هستند |
-| نتیجه گزارش‌شده | پیامک مشتری و مدیران کار می‌کند |
+| Provider | NikSMS.com |
+| Plugin | Persian WooCommerce SMS |
+| Connection tab | Web service (وب‌سرویس) |
+| Administrator tab | General administrator SMS (پیامک مدیر کل) |
+| Enabled order status | Processing (در حال انجام) |
+| Administrator recipients | Three; phone numbers are private |
+| Reported result | Customer and administrator SMS delivery working |
 
-## بازیابی تنظیمات
+## Restore configuration
 
-1. افزونه موجود را در پیشخوان بررسی کنید و وارد تب «وب‌سرویس» شوید.
-2. ارائه‌دهنده NikSMS را انتخاب و اطلاعات اتصال را از پنل خصوصی وارد کنید. نام و تعداد فیلدها باید با نسخه نصب‌شده تطبیق داده شود.
-3. در تب «پیامک مدیر کل»، سه گیرنده مورد تأیید را از اطلاعات خصوصی سایت ثبت کنید.
-4. وضعیت «در حال انجام» و متن‌های پیامک را با تنظیمات فعلی سایت تطبیق دهید.
-5. ارسال مشتری و مدیران را جداگانه بررسی کنید و نتیجه را بدون شماره تلفن یا اطلاعات مشتری ثبت کنید.
+1. Inspect the installed plugin and open its Web service tab.
+2. Select NikSMS and enter credentials from the private provider account. Match field names and requirements to the installed version.
+3. In the administrator SMS tab, configure the three approved recipients using private site records.
+4. Compare the Processing status selection and message templates with the site's current configuration.
+5. Verify customer and administrator delivery separately. Record results without phone numbers or customer data.
 
-متن دقیق پیامک‌ها، نسخه افزونه، شماره خط و تمام رویدادهای فعال در داده‌های موجود ثبت نشده‌اند؛ این راهنما خروجی کامل تنظیمات یا پشتیبان قابل import نیست. مقادیر نامعلوم عمداً حدس زده نشده‌اند.
+The exact message templates, plugin version, sender number, and complete set of enabled events are not available in the setup record. This guide is not a complete settings export or importable backup. Unknown values have not been invented.
 
-## ارتباط با روبیکا
+## Relationship to Rubika
 
-[روبیکا](../../snippets/order-notifications/README.md) یک اعلان مستقل از SMS است. موفقیت پیام روبیکا، تأیید ارسال پیامک یا اجرای درگاه پرداخت محسوب نمی‌شود. کد روبیکا تنظیمات SMS را دستکاری نمی‌کند.
+[Rubika notifications](../../snippets/order-notifications/README.md) operate independently of SMS. A successful Rubika send does not verify SMS delivery or the payment gateway callback. The Rubika snippet does not modify SMS settings.
 
-## سابقه و اطلاعات خصوصی
+## History and private data
 
-در [فهرست WPCode](../../snippets/WPCODE-INVENTORY.md) یک آزمایش قدیمی پیامک ثبت شده که بازگردانی شده است؛ آن کد دوباره فعال نشود.
+The [WPCode inventory](../../snippets/WPCODE-INVENTORY.md) records a previous SMS experiment that was rolled back. Do not reactivate that experimental code.
 
-نام کاربری، رمز، کلید API، شماره خط، شماره گیرندگان، اطلاعات سفارش مشتری و خروجی خام تنظیمات در مخزن عمومی ذخیره نشوند. تنظیمات OTP افزونه Digits مستقل از اعلان سفارش‌هاست و این راهنما آن را تغییر نمی‌دهد.
+Keep usernames, passwords, API keys, sender numbers, recipient numbers, customer order data, and raw configuration exports out of the public repository. Digits OTP settings are separate from order notifications and are not changed by this guide.

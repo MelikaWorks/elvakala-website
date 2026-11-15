@@ -1,61 +1,63 @@
-# اعلان سفارش‌های الوا کالا — روبیکا و پیامک
+# ELVA KALA Order Notifications — Rubika and SMS
 
-تاریخ ثبت: ۲۰۲۶-۱۱-۱۵
+[فارسی (FA)](README_FA.md)
 
-این پوشه نسخه بدون اطلاعات خصوصی کد روبیکای گفتگو و راهنمای اتصال پیامک را نگه می‌دارد. ثبت در GitHub به معنی نصب یا تغییر سایت نیست.
+Recorded: 2026-11-15
 
-## فایل‌ها
+This directory archives a sanitized copy of the Rubika WPCode snippet and links to the existing SMS configuration. Committing these files does not install or change the live website.
 
-- [کد روبیکا](rubika-orders.php)
-- [تنظیمات پیامک NikSMS](../../Plugin-Customizations/NikSMS/README.md)
-- [گزارش تست و محدودیت‌ها](verification.md)
+## Files
 
-## نصب یا بازیابی در WPCode
+- [Rubika order snippet](rubika-orders.php)
+- [NikSMS configuration](../../Plugin-Customizations/NikSMS/README.md)
+- [Verification record and limitations](verification.md)
 
-1. نوع قطعه‌کد: PHP Snippet؛ نام: `ElvaKala Rubika Orders`.
-2. محتوای فایل PHP را بدون خط آغازین `<?php` وارد کنید.
-3. فقط در پیشخوان خصوصی سایت، `YOUR_BOT_TOKEN` و دو مقدار `YOUR_FIRST_CHAT_ID` و `YOUR_SECOND_CHAT_ID` را جایگزین کنید. نسخه واقعی را به GitHub برنگردانید.
-4. تنظیم اجرا: **Auto Insert → Run Everywhere**.
-5. هنگام جایگزینی، نسخه قبلی را غیرفعال کنید؛ فقط یک نسخه از کد سفارش فعال باشد.
-6. قبل از فعال‌سازی روی یک سایت جدید، تنظیمات و رویداد پرداخت درگاه را بررسی کنید.
+## Install or restore in WPCode
 
-کد آرشیوشده همان منطق نسخه گفتگو را دارد؛ فقط اطلاعات خصوصی با placeholder جایگزین شده و محافظ اجرای خارج وردپرس و محافظ توکن تنظیم‌نشده اضافه شده است. نسخه سایت در این ثبت تغییر نکرده است.
+1. Create a PHP Snippet named `ElvaKala Rubika Orders`.
+2. Paste the PHP file without its opening `<?php` line.
+3. Replace `YOUR_BOT_TOKEN`, `YOUR_FIRST_CHAT_ID`, and `YOUR_SECOND_CHAT_ID` only in the private site dashboard. Never commit the configured copy.
+4. Select **Auto Insert → Run Everywhere**.
+5. Disable the previous copy when replacing it; keep only one order-notification snippet active.
+6. Before enabling on a new site, check the configuration and the payment gateway's payment-complete behavior.
 
-## رفتار
+The archived snippet preserves the implementation from the setup conversation. Private values have been replaced with placeholders, and guards have been added for execution outside WordPress and an unconfigured token. This repository update did not change the live snippet.
 
-با اجرای `woocommerce_payment_complete`، سفارش خوانده می‌شود. اگر `is_paid()` درست باشد، پیام کوتاه شامل شماره سفارش برای هر گیرنده ارسال می‌شود. فقط پاسخ HTTP 200 با `status = OK` موجب ذخیره متای ارسال برای همان گیرنده می‌شود.
+## Behavior
 
-متن پیام:
+On `woocommerce_payment_complete`, the snippet loads the order and checks `is_paid()`. It sends a short notification containing the order number to each recipient. Only HTTP 200 with `status = OK` marks that recipient's notification as sent.
 
-> سفارش جدید الوا کالا  
-> پرداخت موفق. پیگیری شود.  
-> شماره سفارش: [شماره سفارش]
+The production message remains in Persian. Its English meaning is:
 
-متای `_elva_rubika_sent_` به‌همراه MD5 شناسه گیرنده مانع ارسال مجدد در اجرای متوالی بعد از موفقیت می‌شود. این سازوکار تضمین دقیقاً یک‌بار در درخواست‌های هم‌زمان نیست.
+> New ELVA KALA order  
+> Payment successful. Please follow up.  
+> Order number: [order number]
 
-## افزودن گیرنده
+Order metadata uses the prefix `_elva_rubika_sent_` followed by the MD5 hash of the recipient's chat ID. This prevents repeated sequential sends after success; it does not guarantee exactly-once delivery under concurrent requests.
 
-گیرنده به ربات [ElvaKalaOrderBot](https://rubika.ir/ElvaKalaOrderBot) پیام می‌دهد؛ مدیر شناسه چت را خصوصی دریافت و به آرایه `chat_ids` در WPCode اضافه می‌کند. توکن مربوط به ربات است؛ برای هر گیرنده توکن جدید لازم نیست.
+## Add a recipient
 
-افزودن گیرنده باعث ارسال خودکار سفارش‌های قدیمی نمی‌شود. برای کشف شناسه از قطعه‌کد موقت استفاده شده بود؛ آن را دائماً فعال نگذارید.
+The recipient sends a message to [ElvaKalaOrderBot](https://rubika.ir/ElvaKalaOrderBot). An administrator privately obtains the chat ID and adds it to the `chat_ids` array in WPCode. The token belongs to the bot; a separate token is not needed for each recipient.
 
-## وضعیت قطعه‌کدها
+Adding a recipient does not automatically send historical orders. The temporary chat-discovery snippet should not remain permanently enabled.
 
-| نام | وضعیت ثبت‌شده / اقدام |
+## Snippet status
+
+| Snippet | Recorded status / action |
 | --- | --- |
-| ElvaKala Rubika Orders | فعال‌شدن توسط کاربر تأیید شده |
-| ElvaKala Rubika Test | غیرفعال‌شدن توسط کاربر تأیید شده |
-| ElvaKala Rubika Notifications | غیرفعال‌شدن توسط کاربر تأیید شده |
-| ElvaKala Rubika Manual Test | تست موفق؛ غیرفعال‌کردن پس از تست توصیه شده، تأیید نهایی در متن موجود نیست |
+| ElvaKala Rubika Orders | User confirmed activation |
+| ElvaKala Rubika Test | User confirmed deactivation |
+| ElvaKala Rubika Notifications | User confirmed deactivation |
+| ElvaKala Rubika Manual Test | Test succeeded; deactivation was requested, but final confirmation is absent from the available conversation |
 
-قطعه‌کدهای تست با کد اصلی ادغام نشده‌اند. روش تست دستی و نتیجه آن در گزارش تست ثبت شده است.
+Test snippets are separate from the production snippet. The manual test and its result are documented in the verification record.
 
-## محدودیت‌ها و نگهداری
+## Limitations and maintenance
 
-- اجرای واقعی درگاه و دریافت خودکار پیام پس از پرداخت هنوز تأیید نشده است.
-- تغییر دستی وضعیت سفارش لزوماً رویداد مورد استفاده این کد را اجرا نمی‌کند.
-- ارسال هم‌زمان و قطع ارتباط پس از پذیرش پیام ممکن است موجب تکرار شود.
-- شکست ارسال علامت موفقیت نمی‌گیرد، اما صف یا تلاش مجدد زمان‌بندی‌شده وجود ندارد.
-- درخواست‌ها هم‌زمان با پردازش رویداد و به‌ترتیب گیرنده‌ها اجرا می‌شوند؛ timeout هر درخواست ۸ ثانیه است.
-- توکن افشاشده باید از طریق مدیریت ربات تعویض و در WPCode خصوصی به‌روز شود؛ تعویض آن در این ثبت انجام نشده است.
-- این ثبت کد ارسال SMS جدید اضافه نمی‌کند و تنظیمات افزونه پیامک را تغییر نمی‌دهد.
+- Automatic delivery after a real gateway payment remains unverified.
+- Manually changing order status does not necessarily invoke this callback.
+- Concurrent execution or a connection failure after provider acceptance can cause duplicates.
+- Failed sends remain unmarked; there is no queue or scheduled retry.
+- Requests run synchronously during callback processing, sequentially per recipient, with an eight-second timeout each.
+- A previously exposed token should be rotated through bot management and updated privately in WPCode. Rotation was not performed during this repository update.
+- This archive adds no SMS-sending code and does not change the SMS plugin configuration.

@@ -177,3 +177,7 @@ Senior Software Engineer | Full Stack .NET Developer | Enterprise Applications
 ## License
 
 No repository-wide license has been added at this time. The repository includes custom ELVA KALA work and documentation referencing third-party commercial components. Individual files and third-party components may have separate licensing or publication restrictions.
+
+## Order Notifications — November 2026
+
+[Rubika order notifications](snippets/order-notifications/README.md) include the sanitized WPCode snippet, installation guidance, and verification limits. [NikSMS setup](Plugin-Customizations/NikSMS/README.md) documents the existing Persian WooCommerce SMS configuration without credentials or third-party source code. Manual Rubika delivery succeeded for both accounts; automatic delivery after a real payment remains pending verification.

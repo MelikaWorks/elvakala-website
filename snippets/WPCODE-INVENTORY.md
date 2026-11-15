@@ -117,3 +117,8 @@ The change caused an issue with SMS delivery and was therefore reverted.
 **Audit period:** September 2026  
 **Production status:** Stable after cleanup and regression testing  
 **Final verification required:** Recheck the WPCode list before the public repository release
+
+
+## November 15, 2026 — Rubika Notifications
+
+See [order notification documentation](order-notifications/README.md) for the sanitized source and status of all four snippets. The user confirmed enabling `ElvaKala Rubika Orders` and disabling the initial test and discovery snippets. The manual test succeeded; its final deactivation is not explicitly confirmed in the available conversation. Automatic payment-triggered delivery remains unverified. The existing NikSMS setup is documented [here](../Plugin-Customizations/NikSMS/README.md).

@@ -13,6 +13,7 @@ Snippets are organized by functional area so that their purpose, deployment loca
 | `cart-sidebar/`             | WooCommerce cart-sidebar behavior, responsive presentation, AJAX compatibility, and validation screenshots. |
 | `custom-shortcodes/`        | ELVA-specific contact, call-to-action, and location shortcodes.                                             |
 | `homepage/`                 | Homepage-specific modules, mobile footer fixes, Digits UI fixes, and responsive presentation adjustments.   |
+| [order-notifications/](order-notifications/README.md) | Rubika order notifications, separate diagnostic test snippets, bilingual guides, and verification records. |
 | `performance/`              | Production snippets associated with validated optimization work documented under `/performance/`.           |
 | `products/`                 | Product archives, product cards, filters, and single-product presentation changes.                          |
 | `move-term-description.php` | Taxonomy-description placement adjustment.                                                                  |
@@ -29,6 +30,22 @@ Current documented fixes include:
 - Restricting responsive fixes to screens up to `767px`
 
 Some homepage fixes depend on Elementor-generated page and element IDs. These dependencies must be reviewed if the affected Elementor template or widget is rebuilt.
+
+## Order Notifications
+
+The [order-notifications/](order-notifications/README.md) directory contains the Rubika order-notification integration and its diagnostic history:
+
+| File or directory | Contents |
+| --- | --- |
+| [rubika-orders.php](order-notifications/rubika-orders.php) | Sanitized WPCode snippet attached to `woocommerce_payment_complete`, with per-recipient sent metadata. |
+| [README.md](order-notifications/README.md) | English installation guide, recipient configuration, snippet status, and limitations. |
+| [README_FA.md](order-notifications/README_FA.md) | Persian translation of the integration guide. |
+| [verification.md](order-notifications/verification.md) | Reported test results, pending checks, and deduplication limitations. |
+| [tests/](order-notifications/tests/README.md) | Initial connectivity and manual button-test PHP snippets, execution steps, and results; includes English and Persian READMEs. |
+
+Both Rubika accounts received test messages during setup. Automatic delivery after a real payment remains unverified. Diagnostic snippets send real test messages and should be disabled after use; they do not create orders or collect payment.
+
+The existing SMS integration is documented separately under [NikSMS](../Plugin-Customizations/NikSMS/README.md). Credentials, phone numbers, and production chat IDs are excluded from these files.
 
 ## Status and Deployment
 

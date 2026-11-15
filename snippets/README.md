@@ -51,6 +51,8 @@ The existing SMS integration is documented separately under [NikSMS](../Plugin-C
 
 Code in this directory may currently be deployed through WPCode, theme-level custom code, Elementor Custom CSS, or another controlled WordPress integration point.
 
+Many historical PHP files are WPCode snippet bodies without an opening `<?php` tag; they are not standalone plugin files. In WPCode, use PHP Snippet mode and omit an opening tag when one is present. Do not deploy the whole directory as a plugin.
+
 Before enabling a snippet:
 
 1. Read the nearest feature README.

@@ -88,3 +88,7 @@ Details: [`error-log-analysis-2026-09.md`](error-log-analysis-2026-09.md)
 
 `STABLE / VALIDATED — 2026-09-26`
 
+
+## Repository-wide review
+
+[2026-11-15 review](REPOSITORY_REVIEW.md) ([فارسی FA](REPOSITORY_REVIEW_FA.md)) records documentation corrections, JavaScript syntax checks, review limits, and remaining code/deployment findings.

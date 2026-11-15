@@ -124,7 +124,7 @@ The directory contains original source files, minified versions, and screenshots
 
 Related implementation:
 
-`/snippets/performance/load-minified-theme-css.php`
+`/snippets/performance/load-minified-theme.php`
 
 ---
 
@@ -281,6 +281,10 @@ This file contains only the cache configuration introduced during this optimizat
 
 ---
 
+## Extendify Homepage CSS
+
+[Extendify CSS optimization](extendify-css/README.md) documents homepage-only removal of the Redux utility stylesheet, functional checks, and recorded Network/Lighthouse evidence. Its executable snippet is stored beside that report under `extendify-css/`.
+
 ## Final Lighthouse Baseline
 
 The final clean homepage audit was recorded on **2026-09-26** using the canonical homepage URL:
@@ -324,7 +328,7 @@ Current related files include:
 - `preload-homepage-lcp.php`
 - `homepage-category-image-sizes.php`
 - `mobile-deal-slider-webp.php`
-- `load-minified-theme-css.php`
+- `load-minified-theme.php`
 - `lazy-load-footer-images.php`
 - `font-display-swap.css`
 - Digits homepage asset optimization snippet
@@ -373,7 +377,7 @@ snippets/
     ├── preload-homepage-lcp.php
     ├── homepage-category-image-sizes.php
     ├── mobile-deal-slider-webp.php
-    ├── load-minified-theme-css.php
+    ├── load-minified-theme.php
     ├── lazy-load-footer-images.php
     ├── font-display-swap.css
     └── ...

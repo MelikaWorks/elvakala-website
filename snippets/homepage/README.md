@@ -10,7 +10,7 @@ The customization resolves two mobile-only layout issues:
 ## Files
 
 ```text
-mobile-homepage-footer-fixes.css
+hide-digits-search-mobile-homepage.css
 mobile-homepage-footer-before.png
 mobile-homepage-footer-after.png
 README.md

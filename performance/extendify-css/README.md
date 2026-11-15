@@ -66,7 +66,7 @@ add_action(
 The executable snippet is stored at:
 
 ```text
-/snippets/performance/disable-extendify-css-on-homepage.php
+/performance/extendify-css/disable-extendify-css-on-homepage.php
 ```
 
 ## Scope
@@ -126,7 +126,7 @@ extendify-utilities.css
 returned zero requests, confirming that the stylesheet was no longer loaded.
 
 <p align="center">
-  <img src="./screenshots/extendify-css-not-loaded-network.png"
+  <img src="./extendify-css-not-loaded-network.png"
        alt="Network verification showing that Extendify CSS is not loaded"
        width="800">
 </p>
@@ -147,7 +147,7 @@ Speed Index: 5.9 s
 Lighthouse scores may vary between runs because of server response time, network conditions, and CPU throttling. This result is retained as validation evidence and is not presented as proof that the complete score change was caused only by removing Extendify CSS.
 
 <p align="center">
-  <img src="./screenshots/lighthouse-mobile-after-extendify-score-70.png"
+  <img src="./lighthouse-mobile-after-extendify-score-70.png"
        alt="Lighthouse Mobile performance result after removing Extendify CSS"
        width="800">
 </p>

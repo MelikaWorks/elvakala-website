@@ -180,6 +180,10 @@ The [final homepage Lighthouse baseline](performance/README.md#final-lighthouse-
 
 Rejected approaches remain in [performance-experiments/](performance-experiments/README.md). These are historical measurements, not current live-site scores.
 
+## Repository Review
+
+The [2026-11-15 repository review](stability-and-debugging/REPOSITORY_REVIEW.md) ([فارسی FA](stability-and-debugging/REPOSITORY_REVIEW_FA.md)) records documentation fixes, syntax checks, and remaining deployment and code-review findings. It does not replace live WordPress testing.
+
 ## Project Status
 
 This repository is an evolving technical record of the ELVA KALA website. Individual directories may contain production code, documentation-only artifacts, prototypes, inactive snippets, or historical experiments; their local README files are the authoritative status reference.

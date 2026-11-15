@@ -63,9 +63,13 @@ The minified stylesheets are loaded through a custom WordPress snippet.
 
 The implementation snippet is stored separately at:
 
-`/snippets/performance/load-minified-theme-css.php`
+`/snippets/performance/load-minified-theme.php`
 
 This separation keeps production code independent from performance documentation and test assets.
+
+## Deployment filename check
+
+The archived loader currently points to `style.min (1).css` and `woocommerce.min (1).css` on the live theme path, while this repository stores `style.min.css` and `woocommerce.min.css`. Match the server filenames and loader URLs before deploying. The current server files were not inspected during the repository review; a live 404 has not been established.
 
 ## Validation
 

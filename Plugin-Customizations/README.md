@@ -18,6 +18,10 @@ Fixes and extensions for the Digits authentication plugin, including local loadi
 
 A limited prototype for managing large hierarchical WooCommerce category and brand structures inside the native WordPress menu editor. The complete implementation is maintained separately.
 
+### [NikSMS/](NikSMS/README.md)
+
+Configuration documentation for the existing Persian WooCommerce SMS integration, including reported delivery status and private setup requirements. [Persian guide](NikSMS/README_FA.md).
+
 ## Directory Rules
 
 - Store only ELVA-specific extension code and documentation here.

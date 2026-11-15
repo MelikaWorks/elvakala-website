@@ -115,8 +115,8 @@ post-release-fixes/
   02-before-rules-saved-but-not-applied.jpg
   03-after-apply-action-13-products-synced.jpg
   04-after-bimax-rule-applied.jpg
-  05-before-bazara-hook-waiting.jpeg
-  06-before-installment-price-not-synced.jpeg
+  05-before-bazara-hook-waiting.jpg
+  06-before-installment-price-not-synced.jpg
   07-after-price-and-installments-synced.png
   08-after-auto-sync-success.jpg
 screenshots/

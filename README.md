@@ -6,18 +6,36 @@ The repository is organized by type of work so that production snippets, third-p
 
 ## Repository Structure
 
-| Directory | Purpose |
+Every current top-level directory is listed below. Follow its README for implementation details and historical validation evidence.
+
+| Directory | Current contents |
 | --- | --- |
-| `Plugin-Customizations/` | Custom behavior built around third-party WordPress plugins without redistributing their original source code. |
-| `docs/` | Cross-project documentation, technical notes, decisions, and future repository-level guides. |
-| `elementor/` | Elementor page, header, footer, menu, layout, and responsive customizations. |
-| `performance/` | Validated performance investigations, implementation references, test evidence, and Lighthouse results. |
-| `performance-experiments/` | Rejected or rolled-back performance experiments retained to prevent repeating unsuccessful work. |
-| `plugins/` | Plugins, plugin prototypes, and engineering projects developed specifically for ELVA KALA. |
-| `screenshots/` | Shared repository-level visual evidence that does not belong to one specific component directory. |
-| `seo/` | SEO audits, checks, evidence, and related documentation. |
-| `snippets/` | Active or archived WordPress, WooCommerce, PHP, CSS, JavaScript, and frontend snippets organized by feature. |
-| `stability-and-debugging/` | Documented PHP warnings, REST/API compatibility fixes, error-log analysis, regression evidence, and production stability notes. |
+| [Plugin-Customizations/](Plugin-Customizations/README.md) | DenaPay checkout rules, Digits dependency fixes, Smart Menu Hierarchy prototype, and NikSMS configuration. |
+| [analytics-search-console/](analytics-search-console/README.md) | Google Search Console ownership, sitemap and indexing checks; GA4 installation and realtime verification. |
+| [elementor/](elementor/README.md) | About and contact pages, homepage sections, footer columns, responsive header, main menu, and special-offer timer fix. |
+| [performance/](performance/README.md) | Asset and image optimization, LCP, CSS/JS minification, render-blocking investigations, cache configuration, and final Lighthouse evidence. |
+| [performance-experiments/](performance-experiments/README.md) | Rejected jQuery Migrate and homepage WooCommerce CSS experiments, with rollback reasons. |
+| [plugins/](plugins/README.md) | Installment-management engineering case study, research artifacts, architecture decisions, and post-release validation; production engine remains private. |
+| [screenshots/](screenshots/README.md) | Shared visual evidence and screenshot organization guidance. |
+| [seo/](seo/README.md) | Broken-link investigation and evidence; other SEO audit categories are future scope. |
+| [snippets/](snippets/README.md) | Article and brand presentation, cart sidebar, shortcodes, homepage fixes, order notifications and tests, performance snippets, and product interfaces. |
+| [stability-and-debugging/](stability-and-debugging/README.md) | Bazara warning fixes, MWEB REST compatibility guard, error-log investigation, and regression evidence. |
+
+This is a curated engineering record, not a complete WordPress installation or a restorable site backup. Status labels describe the documented checks at their recorded dates; this README is not a new live-site audit.
+
+## Project Guide
+
+| Area | Implementation and evidence |
+| --- | --- |
+| Installment sales enhancements | [Case study](plugins/elva-installment-manager/README.md), [post-release fixes](plugins/elva-installment-manager/post-release-fixes/README.md), and [DenaPay customization](Plugin-Customizations/DenaPay/README.md). Covers category rules, controlled product synchronization, price-change recalculation, and checkout restrictions. |
+| Authentication and checkout dependency | [Digits customizations](Plugin-Customizations/elva-digits-customizations/README.md): local libphonenumber loading and checkout verification. |
+| Menu management prototype | [Smart Menu Hierarchy](Plugin-Customizations/Smart-Menu-Hierarchy/README.md): limited sample for hierarchical category and brand menus; full implementation is maintained separately. |
+| Page and navigation design | [Elementor components](elementor/README.md): pages, header, footer, homepage, mega menu, and [special-offer timer fix](elementor/special-offer-slider-timer-fix/README.md). |
+| Storefront snippets | [Articles](snippets/articles/README.md), [brands](snippets/brand/README.md), [cart sidebar](snippets/cart-sidebar/README.md), [shortcodes](snippets/custom-shortcodes/README.md), [homepage](snippets/homepage/README.md), and [products](snippets/products/README.md). |
+| Performance | [Optimization report](performance/README.md), [executable snippets](snippets/performance/), and [rolled-back experiments](performance-experiments/README.md). |
+| Analytics and search visibility | [Search Console and GA4](analytics-search-console/README.md), plus [broken-link checks](seo/broken-links/README.md). |
+| Reliability and operations | [Stability investigations](stability-and-debugging/README.md) and [WPCode inventory](snippets/WPCODE-INVENTORY.md). |
+| Order notifications | [Rubika code and guides](snippets/order-notifications/README.md), [diagnostic tests](snippets/order-notifications/tests/README.md), and [NikSMS configuration](Plugin-Customizations/NikSMS/README.md). |
 
 ## Validated Production Work
 
@@ -95,11 +113,7 @@ Production and diagnostic snippets are stored separately. Diagnostic snippets sh
 
 ## WPCode Management
 
-Production and legacy WPCode snippets are documented under:
-
-```text
-snippets/WPCODE-INVENTORY.md
-```
+Production and legacy WPCode snippets are documented in the [WPCode inventory](snippets/WPCODE-INVENTORY.md).
 
 The inventory records active, inactive, removed, and rolled-back snippets reviewed during maintenance.
 
@@ -162,13 +176,15 @@ Validated performance work includes responsive image delivery, selected WebP con
 
 Performance test scores may vary between runs and environments. Final conclusions should be based on multiple tests under consistent conditions rather than a single Lighthouse or GTmetrix result.
 
-Remaining performance investigations and final baseline work are documented in the relevant `performance/` and `performance-experiments/` directories.
+The [final homepage Lighthouse baseline](performance/README.md#final-lighthouse-baseline), recorded on **2026-09-26**, reports Performance **72**, Accessibility **86**, Best Practices **100**, SEO **100**, LCP **3.2 s**, and CLS **0.001**. The documented optimization phase is marked **Stable / Final QA Passed**. Remaining opportunities are recorded limitations, not a claim that all performance issues have been eliminated.
+
+Rejected approaches remain in [performance-experiments/](performance-experiments/README.md). These are historical measurements, not current live-site scores.
 
 ## Project Status
 
 This repository is an evolving technical record of the ELVA KALA website. Individual directories may contain production code, documentation-only artifacts, prototypes, inactive snippets, or historical experiments; their local README files are the authoritative status reference.
 
-The September 2026 stability, DenaPay pricing, Bazara synchronization, WooCommerce REST compatibility, and mobile homepage footer changes have been documented and production-validated.
+The repository records September 2026 stability and checkout validation, installment-system post-release fixes, the final performance baseline, Search Console and GA4 verification, and November 2026 notification setup. Verification scope differs by component: Rubika manual delivery passed, while automatic delivery after a real payment remains unverified.
 
 ## Author
 

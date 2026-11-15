@@ -61,3 +61,7 @@ Test snippets are separate from the production snippet. The manual test and its 
 - Requests run synchronously during callback processing, sequentially per recipient, with an eight-second timeout each.
 - A previously exposed token should be rotated through bot management and updated privately in WPCode. Rotation was not performed during this repository update.
 - This archive adds no SMS-sending code and does not change the SMS plugin configuration.
+
+## Archived diagnostic snippets
+
+The [manual test archive](tests/README.md) contains the initial connectivity and button-triggered tests, execution steps, recorded results, and limitations. Keep these temporary snippets disabled after testing.

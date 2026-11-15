@@ -78,6 +78,21 @@ Before-and-after screenshots and implementation notes are stored under `snippets
 
 **Status:** `Stable`
 
+## Order Notifications — November 2026
+
+Order notifications cover the existing NikSMS plugin configuration and a custom Rubika WPCode integration.
+
+| Component | Contents | Documentation |
+| --- | --- | --- |
+| Rubika order notifications | Sanitized payment-complete snippet, recipient setup, installation steps, and limitations. | [English](snippets/order-notifications/README.md) · [فارسی (FA)](snippets/order-notifications/README_FA.md) |
+| Rubika diagnostic tests | Initial connectivity test and manual button test using `TEST-123`, with execution steps and recorded results. | [English](snippets/order-notifications/tests/README.md) · [فارسی (FA)](snippets/order-notifications/tests/README_FA.md) |
+| NikSMS order notifications | Existing Persian WooCommerce SMS plugin configuration for customer and administrator notifications. | [English](Plugin-Customizations/NikSMS/README.md) · [فارسی (FA)](Plugin-Customizations/NikSMS/README_FA.md) |
+| Verification record | Completed checks, pending real-payment validation, and deduplication limitations. | [Test record](snippets/order-notifications/verification.md) |
+
+**Status:** Manual Rubika delivery succeeded for both configured accounts. Automatic delivery after a real payment remains pending verification. SMS delivery was reported working during setup.
+
+Production and diagnostic snippets are stored separately. Diagnostic snippets should be disabled after use. Tokens, phone numbers, production chat IDs, and third-party plugin source code are excluded.
+
 ## WPCode Management
 
 Production and legacy WPCode snippets are documented under:
@@ -177,7 +192,3 @@ Senior Software Engineer | Full Stack .NET Developer | Enterprise Applications
 ## License
 
 No repository-wide license has been added at this time. The repository includes custom ELVA KALA work and documentation referencing third-party commercial components. Individual files and third-party components may have separate licensing or publication restrictions.
-
-## Order Notifications — November 2026
-
-[Rubika order notifications](snippets/order-notifications/README.md) include the sanitized WPCode snippet, installation guidance, and verification limits. [NikSMS setup](Plugin-Customizations/NikSMS/README.md) documents the existing Persian WooCommerce SMS configuration without credentials or third-party source code. Manual Rubika delivery succeeded for both accounts; automatic delivery after a real payment remains pending verification.
